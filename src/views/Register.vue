@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+  import { useRouter } from 'vue-router'
 
-import { Button, ButtonLink } from "@/components/ui/button";
-import RegisterForm from "@/features/auth/RegisterForm.vue";
+  import { Button, ButtonLink } from '@/components/ui/button'
+  import RegisterForm from '@/features/auth/RegisterForm.vue'
 
-const router = useRouter();
+  const router = useRouter()
 
-const handleRegisterSuccess = (data: {
-  username: string;
-  email: string;
-}): void => {
-  localStorage.setItem("isAuthenticated", "true");
-  localStorage.setItem("username", data.username);
-  localStorage.setItem("email", data.email);
+  const handleRegisterSuccess = (data: {
+    username: string
+    email: string
+  }): void => {
+    localStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('username', data.username)
+    localStorage.setItem('email', data.email)
 
-  router.replace("/login");
-};
+    router.replace('/login')
+  }
 
-const handleRegisterError = (error: string): void => {
-  console.error("Registration error:", error);
-  alert(error);
-};
+  const handleRegisterError = (error: string): void => {
+    console.error('Registration error:', error)
+    alert(error)
+  }
 </script>
 
 <template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils";
+  import { cn } from '@/lib/utils'
 
-const ITEMS = [
-  "Basic Details",
-  "Additional Details",
-  "Spouse Details",
-  "Personal Preferences",
-];
-const ACTIVE = "Basic Details";
+  const ITEMS = [
+    'Basic Details',
+    'Additional Details',
+    'Spouse Details',
+    'Personal Preferences',
+  ]
+  const ACTIVE = 'Basic Details'
 </script>
 
 <template>

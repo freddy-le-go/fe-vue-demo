@@ -1,1 +1,1 @@
-export { default as ProfileDetails } from './ProfileDetails.vue'; 
+export { default as ProfileDetails } from './ProfileDetails.vue'

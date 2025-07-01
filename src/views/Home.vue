@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { ButtonLink } from "@/components/ui/button";
-import { Menu } from "lucide-vue-next";
+  import { ref } from 'vue'
+  import { ButtonLink } from '@/components/ui/button'
+  import { Menu } from 'lucide-vue-next'
 
-const showMenu = ref(false);
+  const showMenu = ref(false)
 </script>
 
 <template>
@@ -29,10 +29,33 @@ const showMenu = ref(false);
           class="fixed inset-0 bg-white bg-opacity-95 z-50 flex flex-col items-center justify-center transition-all"
           @click.self="showMenu = false"
         >
-          <ButtonLink to="/" class="w-3/4 text-center mb-4 text-lg" @click="showMenu = false">Home</ButtonLink>
-          <ButtonLink variant="link" to="/login" class="w-3/4 text-center mb-4 text-lg" @click="showMenu = false">Login</ButtonLink>
-          <ButtonLink variant="link" to="/register" class="w-3/4 text-center mb-4 text-lg" @click="showMenu = false">Register</ButtonLink>
-          <ButtonLink variant="link" to="/profile" class="w-3/4 text-center text-lg" @click="showMenu = false">Profile</ButtonLink>
+          <ButtonLink
+            to="/"
+            class="w-3/4 text-center mb-4 text-lg"
+            @click="showMenu = false"
+            >Home</ButtonLink
+          >
+          <ButtonLink
+            variant="link"
+            to="/login"
+            class="w-3/4 text-center mb-4 text-lg"
+            @click="showMenu = false"
+            >Login</ButtonLink
+          >
+          <ButtonLink
+            variant="link"
+            to="/register"
+            class="w-3/4 text-center mb-4 text-lg"
+            @click="showMenu = false"
+            >Register</ButtonLink
+          >
+          <ButtonLink
+            variant="link"
+            to="/profile"
+            class="w-3/4 text-center text-lg"
+            @click="showMenu = false"
+            >Profile</ButtonLink
+          >
         </div>
       </div>
     </header>

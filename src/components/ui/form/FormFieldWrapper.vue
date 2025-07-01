@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import type { Component, VNode } from "vue";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from ".";
+  import type { Component, VNode } from 'vue'
+  import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '.'
 
-interface IFieldProps {
-  name: string;
-  value: any;
-  onChange: (value: any) => void;
-  onBlur: (e: Event) => void;
-  [key: string]: any;
-}
+  interface IFieldProps {
+    name: string
+    value: any
+    onChange: (value: any) => void
+    onBlur: (e: Event) => void
+    [key: string]: any
+  }
 
-interface IProps {
-  name: string;
-  label?: string;
-  component?: Component;
-  componentProps?: Record<string, any>;
-  class?: string;
-  required?: boolean;
-}
+  interface IProps {
+    name: string
+    label?: string
+    component?: Component
+    componentProps?: Record<string, any>
+    class?: string
+    required?: boolean
+  }
 
-const props = defineProps<IProps>();
+  const props = defineProps<IProps>()
 
-defineSlots<{
-  default: (props: {
-    field: IFieldProps;
-    errorMessage: string | undefined;
-  }) => VNode[];
-  endContent?: () => VNode[];
-  startContent?: () => VNode[];
-}>();
+  defineSlots<{
+    default: (props: {
+      field: IFieldProps
+      errorMessage: string | undefined
+    }) => VNode[]
+    endContent?: () => VNode[]
+    startContent?: () => VNode[]
+  }>()
 </script>
 
 <template>

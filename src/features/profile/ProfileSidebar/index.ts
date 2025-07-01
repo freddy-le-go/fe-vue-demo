@@ -1,1 +1,1 @@
-export { default as ProfileSidebar } from "./ProfileSidebar.vue";
+export { default as ProfileSidebar } from './ProfileSidebar.vue'

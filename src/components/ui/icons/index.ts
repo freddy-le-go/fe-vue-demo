@@ -1,1 +1,1 @@
-export { default as GoogleLogo } from './GoogleLogo.vue' 
+export { default as GoogleLogo } from './GoogleLogo.vue'

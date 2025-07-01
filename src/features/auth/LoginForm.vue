@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from 'vue'
 
-import { toTypedSchema } from "@vee-validate/zod";
+  import { toTypedSchema } from '@vee-validate/zod'
 
-import { z } from "zod";
-import { Eye, EyeOff } from "lucide-vue-next";
+  import { z } from 'zod'
+  import { Eye, EyeOff } from 'lucide-vue-next'
 
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { InputWrapper } from "@/components/ui/input";
-import { Form, FormFieldWrapper } from "@/components/ui/form";
+  import { Card } from '@/components/ui/card'
+  import { Label } from '@/components/ui/label'
+  import { Button } from '@/components/ui/button'
+  import { Checkbox } from '@/components/ui/checkbox'
+  import { InputWrapper } from '@/components/ui/input'
+  import { Form, FormFieldWrapper } from '@/components/ui/form'
 
-const loginSchema = toTypedSchema(
-  z.object({
-    userId: z
-      .string()
-      .min(1, "User ID is required")
-      .min(3, "User ID must be at least 3 characters")
-      .max(50, "User ID must be less than 50 characters")
-      .regex(
-        /^[a-zA-Z0-9_]+$/,
-        "User ID can only contain letters, numbers, and underscores"
-      ),
-    password: z
-      .string()
-      .min(1, "Password is required")
-      .min(6, "Password must be at least 6 characters")
-      .max(100, "Password must be less than 100 characters")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-      ),
-  })
-);
+  const loginSchema = toTypedSchema(
+    z.object({
+      userId: z
+        .string()
+        .min(1, 'User ID is required')
+        .min(3, 'User ID must be at least 3 characters')
+        .max(50, 'User ID must be less than 50 characters')
+        .regex(
+          /^[a-zA-Z0-9_]+$/,
+          'User ID can only contain letters, numbers, and underscores'
+        ),
+      password: z
+        .string()
+        .min(1, 'Password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(100, 'Password must be less than 100 characters')
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+          'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+        ),
+    })
+  )
 
-const emit = defineEmits<{
-  onSuccess: [data: { username: string; rememberMe: boolean }];
-  onError: [error: string];
-}>();
+  const emit = defineEmits<{
+    onSuccess: [data: { username: string; rememberMe: boolean }]
+    onError: [error: string]
+  }>()
 
-const showPassword = ref(false);
-const rememberMe = ref(false);
+  const showPassword = ref(false)
+  const rememberMe = ref(false)
 
-const onSubmit = async (values: any) => {
-  try {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+  const onSubmit = async (values: any) => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-    emit("onSuccess", {
-      username: values.userId,
-      rememberMe: rememberMe.value,
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    emit("onError", "Login failed. Please try again.");
+      emit('onSuccess', {
+        username: values.userId,
+        rememberMe: rememberMe.value,
+      })
+    } catch (error) {
+      console.error('Login error:', error)
+      emit('onError', 'Login failed. Please try again.')
+    }
   }
-};
 
-const handleSocialLogin = (provider: string): void => {
-  console.log(`Social login with ${provider}`);
-};
+  const handleSocialLogin = (provider: string): void => {
+    console.log(`Social login with ${provider}`)
+  }
 </script>
 
 <template>

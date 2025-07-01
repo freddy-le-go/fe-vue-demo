@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+  import { useRouter } from 'vue-router'
 
-import { Button, ButtonLink } from "@/components/ui/button";
-import LoginForm from "@/features/auth/LoginForm.vue";
+  import { Button, ButtonLink } from '@/components/ui/button'
+  import LoginForm from '@/features/auth/LoginForm.vue'
 
-const router = useRouter();
+  const router = useRouter()
 
-const handleLoginSuccess = (data: {
-  username: string;
-  rememberMe: boolean;
-}): void => {
-  localStorage.setItem("isAuthenticated", "true");
-  localStorage.setItem("username", data.username);
-  if (data.rememberMe) {
-    localStorage.setItem("rememberMe", "true");
+  const handleLoginSuccess = (data: {
+    username: string
+    rememberMe: boolean
+  }): void => {
+    localStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('username', data.username)
+    if (data.rememberMe) {
+      localStorage.setItem('rememberMe', 'true')
+    }
+
+    router.replace('/profile')
   }
 
-  router.replace("/profile");
-};
-
-const handleLoginError = (error: string): void => {
-  console.error("Login error:", error);
-  alert(error);
-};
+  const handleLoginError = (error: string): void => {
+    console.error('Login error:', error)
+    alert(error)
+  }
 </script>
 
 <template>

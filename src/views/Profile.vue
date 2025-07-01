@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+  import { useRouter } from 'vue-router'
 
-import { Button } from "@/components/ui/button";
-import { ProfileSidebar } from "@/features/profile/ProfileSidebar";
-import { ProfileDetails } from "@/features/profile/ProfileDetails";
+  import { Button } from '@/components/ui/button'
+  import { ProfileSidebar } from '@/features/profile/ProfileSidebar'
+  import { ProfileDetails } from '@/features/profile/ProfileDetails'
 
-const router = useRouter();
-function handleLogout() {
-  localStorage.removeItem("isAuthenticated");
-  router.replace("/login");
-}
+  const router = useRouter()
+  function handleLogout() {
+    localStorage.removeItem('isAuthenticated')
+    router.replace('/login')
+  }
 </script>
 
 <template>

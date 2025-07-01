@@ -1,85 +1,85 @@
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+  import { ref, reactive, watch } from 'vue'
 
-import { toTypedSchema } from "@vee-validate/zod";
+  import { toTypedSchema } from '@vee-validate/zod'
 
-import { z } from "zod";
-import { useForm } from "vee-validate";
-import { Pencil, ArrowLeft, Save, X } from "lucide-vue-next";
+  import { z } from 'zod'
+  import { useForm } from 'vee-validate'
+  import { Pencil, ArrowLeft, Save, X } from 'lucide-vue-next'
 
-import {
-  Select,
-  SelectItem,
-  SelectValue,
-  SelectContent,
-  SelectTrigger,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { InputWrapper } from "@/components/ui/input";
-import { Form, FormFieldWrapper } from "@/components/ui/form";
+  import {
+    Select,
+    SelectItem,
+    SelectValue,
+    SelectContent,
+    SelectTrigger,
+  } from '@/components/ui/select'
+  import { Label } from '@/components/ui/label'
+  import { Button } from '@/components/ui/button'
+  import { InputWrapper } from '@/components/ui/input'
+  import { Form, FormFieldWrapper } from '@/components/ui/form'
 
-const isEditMode = ref(false);
-const salutations = ["Mr.", "Ms.", "Mrs."];
+  const isEditMode = ref(false)
+  const salutations = ['Mr.', 'Ms.', 'Mrs.']
 
-const profile = reactive({
-  salutation: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  avatarUrl: "",
-});
-
-const schema = toTypedSchema(
-  z.object({
-    salutation: z.string().min(1, "Salutation is required."),
-    firstName: z.string().min(1, "First name is required."),
-    lastName: z.string().min(1, "Last name is required."),
-    email: z
-      .string()
-      .min(1, "Email address is required.")
-      .email("Invalid email address."),
-    avatarUrl: z.string().optional(),
+  const profile = reactive({
+    salutation: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    avatarUrl: '',
   })
-);
 
-const { resetForm } = useForm({
-  validationSchema: schema,
-  initialValues: { ...profile },
-});
+  const schema = toTypedSchema(
+    z.object({
+      salutation: z.string().min(1, 'Salutation is required.'),
+      firstName: z.string().min(1, 'First name is required.'),
+      lastName: z.string().min(1, 'Last name is required.'),
+      email: z
+        .string()
+        .min(1, 'Email address is required.')
+        .email('Invalid email address.'),
+      avatarUrl: z.string().optional(),
+    })
+  )
 
-function saveProfile(values: any) {
-  Object.assign(profile, values);
-  isEditMode.value = false;
-  resetForm({ values });
-}
+  const { resetForm } = useForm({
+    validationSchema: schema,
+    initialValues: { ...profile },
+  })
 
-function cancelEdit() {
-  resetForm({ values: profile });
-  isEditMode.value = false;
-}
-
-function onAvatarChange(e: Event, field: any) {
-  const file = (e.target as HTMLInputElement).files?.[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      field.onChange((ev.target as FileReader)?.result);
-    };
-    reader.readAsDataURL(file);
+  function saveProfile(values: any) {
+    Object.assign(profile, values)
+    isEditMode.value = false
+    resetForm({ values })
   }
-}
 
-watch(isEditMode, (newMode) => {
-  if (newMode) {
-    resetForm({ values: { ...profile } });
+  function cancelEdit() {
+    resetForm({ values: profile })
+    isEditMode.value = false
   }
-});
 
-const Salutation = "Salutation";
-const FirstName = "First name";
-const LastName = "Last name";
-const Email = "Email address";
+  function onAvatarChange(e: Event, field: any) {
+    const file = (e.target as HTMLInputElement).files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = ev => {
+        field.onChange((ev.target as FileReader)?.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  watch(isEditMode, newMode => {
+    if (newMode) {
+      resetForm({ values: { ...profile } })
+    }
+  })
+
+  const Salutation = 'Salutation'
+  const FirstName = 'First name'
+  const LastName = 'Last name'
+  const Email = 'Email address'
 </script>
 
 <template>
@@ -116,7 +116,7 @@ const Email = "Email address";
         <template #default="{ field }">
           <div class="flex flex-col items-center">
             <img
-              :src="field.value || 'https://avatar.iran.liara.run/public/30'"
+              :src="field.value"
               alt="User Avatar"
               class="size-40 rounded-full object-cover border border-gray-200 aspect-square max-lg:size-32 max-md:size-40 max-lg:min-w-32"
             />
@@ -124,7 +124,7 @@ const Email = "Email address";
               <input
                 type="file"
                 class="hidden"
-                @change="(e) => onAvatarChange(e, field)"
+                @change="e => onAvatarChange(e, field)"
               />
               Upload image
             </label>

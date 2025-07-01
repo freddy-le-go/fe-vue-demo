@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { cn } from "@/lib/utils";
+  import { computed } from 'vue'
+  import { cn } from '@/lib/utils'
 
-interface Props {
-  type?: "spinner" | "dots" | "pulse" | "bars" | "ring";
-  size?: "sm" | "md" | "lg" | "xl";
-  color?: "primary" | "secondary" | "white" | "current";
-  class?: string;
-}
+  interface Props {
+    type?: 'spinner' | 'dots' | 'pulse' | 'bars' | 'ring'
+    size?: 'sm' | 'md' | 'lg' | 'xl'
+    color?: 'primary' | 'secondary' | 'white' | 'current'
+    class?: string
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  type: "spinner",
-  size: "md",
-  color: "current",
-});
+  const props = withDefaults(defineProps<Props>(), {
+    type: 'spinner',
+    size: 'md',
+    color: 'current',
+  })
 
-const sizeClasses = computed(() => ({
-  sm: "h-4 w-4",
-  md: "h-5 w-5",
-  lg: "h-6 w-6",
-  xl: "h-8 w-8",
-}));
+  const sizeClasses = computed(() => ({
+    sm: 'h-4 w-4',
+    md: 'h-5 w-5',
+    lg: 'h-6 w-6',
+    xl: 'h-8 w-8',
+  }))
 
-const colorClasses = computed(() => ({
-  primary: "text-primary",
-  secondary: "text-secondary",
-  white: "text-white",
-  current: "text-current",
-}));
+  const colorClasses = computed(() => ({
+    primary: 'text-primary',
+    secondary: 'text-secondary',
+    white: 'text-white',
+    current: 'text-current',
+  }))
 </script>
 
 <template>
@@ -68,10 +68,10 @@ const colorClasses = computed(() => ({
             size === 'sm'
               ? 'h-1 w-1'
               : size === 'md'
-              ? 'h-1.5 w-1.5'
-              : size === 'lg'
-              ? 'h-2 w-2'
-              : 'h-2.5 w-2.5'
+                ? 'h-1.5 w-1.5'
+                : size === 'lg'
+                  ? 'h-2 w-2'
+                  : 'h-2.5 w-2.5'
           )
         "
         :style="{ animationDelay: `${(i - 1) * 0.2}s` }"
@@ -104,10 +104,10 @@ const colorClasses = computed(() => ({
             size === 'sm'
               ? 'h-3 w-0.5'
               : size === 'md'
-              ? 'h-4 w-1'
-              : size === 'lg'
-              ? 'h-5 w-1'
-              : 'h-6 w-1.5'
+                ? 'h-4 w-1'
+                : size === 'lg'
+                  ? 'h-5 w-1'
+                  : 'h-6 w-1.5'
           )
         "
         :style="{ animationDelay: `${(i - 1) * 0.15}s` }"

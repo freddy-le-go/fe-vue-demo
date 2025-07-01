@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { type ButtonVariants, buttonVariants } from ".";
-import type { RouteLocationRaw } from "vue-router";
+  import { RouterLink } from 'vue-router'
+  import type { HTMLAttributes } from 'vue'
+  import { cn } from '@/lib/utils'
+  import { type ButtonVariants, buttonVariants } from '.'
+  import type { RouteLocationRaw } from 'vue-router'
 
-interface Props {
-  variant?: ButtonVariants["variant"];
-  size?: ButtonVariants["size"];
-  class?: HTMLAttributes["class"];
-  to: RouteLocationRaw;
-  replace?: boolean;
-  activeClass?: string;
-  exactActiveClass?: string;
-}
+  interface Props {
+    variant?: ButtonVariants['variant']
+    size?: ButtonVariants['size']
+    class?: HTMLAttributes['class']
+    to: RouteLocationRaw
+    replace?: boolean
+    activeClass?: string
+    exactActiveClass?: string
+  }
 
-const props = defineProps<Props>();
+  const props = defineProps<Props>()
 </script>
 
 <template>
