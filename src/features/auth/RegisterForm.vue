@@ -94,25 +94,27 @@
             </template>
           </FormFieldWrapper>
 
-          <!-- Terms and Conditions -->
           <div class="flex items-center space-x-2">
-            <Checkbox id="terms" v-model:checked="acceptTerms" />
+            <Checkbox
+              id="terms"
+              v-model:checked="acceptTerms"
+              @update:modelValue="acceptTerms = !acceptTerms"
+            />
             <Label for="terms" class="text-sm font-normal">
               I agree to the
-              <Button variant="link" class="px-0 text-sm"
+              <Button type="button" variant="link" class="px-0 text-sm"
                 >Terms of Service</Button
               >
               and
-              <Button variant="link" class="px-0 text-sm"
+              <Button type="button" variant="link" class="px-0 text-sm"
                 >Privacy Policy</Button
               >
             </Label>
           </div>
 
-          <!-- Submit Button -->
           <Button
             type="submit"
-            :disabled="isSubmitting || !acceptTerms"
+            :disabled="!acceptTerms"
             :isLoading="isSubmitting"
             loadingText="Creating account..."
             class="w-full"

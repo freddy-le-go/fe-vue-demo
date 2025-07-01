@@ -1,5 +1,5 @@
 <template>
-  <Card class="p-8">
+  <Card class="p-6">
     <Form
       @submit="onSubmit"
       :validation-schema="loginSchema"
@@ -56,12 +56,13 @@
               >Keep me logged in</Label
             >
           </div>
-          <Button variant="link" class="px-0 text-sm">Forgot password?</Button>
+          <Button type="button" variant="link" class="px-0 text-sm"
+            >Forgot password?</Button
+          >
         </div>
 
         <Button
           type="submit"
-          :disabled="isSubmitting"
           :isLoading="isSubmitting"
           loadingText="Signing in..."
           class="w-full"

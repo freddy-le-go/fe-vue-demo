@@ -111,13 +111,13 @@ const Email = "Email address";
       @submit="saveProfile"
       v-slot="{ isSubmitting, meta }"
     >
-      <FormFieldWrapper name="avatarUrl" class="w-full">
+      <FormFieldWrapper name="avatarUrl" class="max-md:w-full">
         <template #default="{ field }">
           <div class="flex flex-col items-center">
             <img
               :src="field.value || 'https://avatar.iran.liara.run/public/30'"
               alt="User Avatar"
-              class="size-40 rounded-full object-cover border border-gray-200"
+              class="size-40 rounded-full object-cover border border-gray-200 aspect-square max-lg:size-32 max-md:size-40 max-lg:min-w-32"
             />
             <label class="mt-2 text-xs text-primary underline cursor-pointer">
               <input
