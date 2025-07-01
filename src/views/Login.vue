@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
+import { Button, ButtonLink } from "@/components/ui/button";
+import LoginForm from "@/features/auth/LoginForm.vue";
+
+const router = useRouter();
+
+const handleLoginSuccess = (data: {
+  username: string;
+  rememberMe: boolean;
+}): void => {
+  localStorage.setItem("isAuthenticated", "true");
+  localStorage.setItem("username", data.username);
+  if (data.rememberMe) {
+    localStorage.setItem("rememberMe", "true");
+  }
+
+  router.replace("/profile");
+};
+
+const handleLoginError = (error: string): void => {
+  console.error("Login error:", error);
+  alert(error);
+};
+</script>
+
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center py-8 px-4"
@@ -44,30 +71,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from "vue-router";
-
-import { Button, ButtonLink } from "@/components/ui/button";
-import LoginForm from "@/features/auth/LoginForm.vue";
-
-const router = useRouter();
-
-const handleLoginSuccess = (data: {
-  username: string;
-  rememberMe: boolean;
-}): void => {
-  localStorage.setItem("isAuthenticated", "true");
-  localStorage.setItem("username", data.username);
-  if (data.rememberMe) {
-    localStorage.setItem("rememberMe", "true");
-  }
-
-  router.replace("/profile");
-};
-
-const handleLoginError = (error: string): void => {
-  console.error("Login error:", error);
-  alert(error);
-};
-</script>

@@ -42,7 +42,6 @@ const modelValue = useVModel(props, "modelValue", emits, {
       "
     />
 
-    <!-- Start Content -->
     <div
       v-if="$slots.startContent"
       class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
@@ -50,7 +49,6 @@ const modelValue = useVModel(props, "modelValue", emits, {
       <slot name="startContent" />
     </div>
 
-    <!-- End Content -->
     <div
       v-if="$slots.endContent"
       class="absolute inset-y-0 right-0 pr-3 flex items-center"

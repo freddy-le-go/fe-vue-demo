@@ -18,7 +18,3 @@
     />
   </svg>
 </template>
-
-<script setup lang="ts">
-// Google Logo component
-</script> 

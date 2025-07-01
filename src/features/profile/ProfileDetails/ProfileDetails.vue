@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from "vue";
+
 import { toTypedSchema } from "@vee-validate/zod";
-import { useForm } from "vee-validate";
+
 import { z } from "zod";
+import { useForm } from "vee-validate";
 import { Pencil, ArrowLeft, Save, X } from "lucide-vue-next";
 
 import {
@@ -21,11 +23,11 @@ const isEditMode = ref(false);
 const salutations = ["Mr.", "Ms.", "Mrs."];
 
 const profile = reactive({
-  salutation: "Mr.",
-  firstName: "John",
-  lastName: "Doe Jr.",
-  email: "johndoe@anyemail.com",
-  avatarUrl: "https://avatar.iran.liara.run/public/30",
+  salutation: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  avatarUrl: "",
 });
 
 const schema = toTypedSchema(

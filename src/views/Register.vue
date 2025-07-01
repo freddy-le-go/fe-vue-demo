@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
+import { Button, ButtonLink } from "@/components/ui/button";
+import RegisterForm from "@/features/auth/RegisterForm.vue";
+
+const router = useRouter();
+
+const handleRegisterSuccess = (data: {
+  username: string;
+  email: string;
+}): void => {
+  localStorage.setItem("isAuthenticated", "true");
+  localStorage.setItem("username", data.username);
+  localStorage.setItem("email", data.email);
+
+  router.replace("/login");
+};
+
+const handleRegisterError = (error: string): void => {
+  console.error("Registration error:", error);
+  alert(error);
+};
+</script>
+
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center py-8 px-4"
@@ -8,7 +33,10 @@
         <p class="text-muted-foreground">Create your account to get started</p>
       </div>
 
-      <RegisterForm @onSuccess="handleRegisterSuccess" @onError="handleRegisterError" />
+      <RegisterForm
+        @onSuccess="handleRegisterSuccess"
+        @onError="handleRegisterError"
+      />
 
       <div class="text-center mt-6">
         <p class="text-muted-foreground">
@@ -44,30 +72,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from "vue-router";
-
-import { Button, ButtonLink } from "@/components/ui/button";
-import RegisterForm from "@/features/auth/RegisterForm.vue";
-
-const router = useRouter();
-
-const handleRegisterSuccess = (data: {
-  username: string;
-  email: string;
-}): void => {
-  console.log("🚀 ~ Registration successful:", data);
-  localStorage.setItem("isAuthenticated", "true");
-  localStorage.setItem("username", data.username);
-  localStorage.setItem("email", data.email);
-
-  // Navigate to login page after successful registration
-  router.replace("/login");
-};
-
-const handleRegisterError = (error: string): void => {
-  console.error("Registration error:", error);
-  alert(error);
-};
-</script> 
