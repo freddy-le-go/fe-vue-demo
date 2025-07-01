@@ -1,3 +1,82 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { toTypedSchema } from "@vee-validate/zod";
+
+import { z } from "zod";
+import { Eye, EyeOff } from "lucide-vue-next";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { InputWrapper } from "@/components/ui/input";
+import { Form, FormFieldWrapper } from "@/components/ui/form";
+
+const registerSchema = toTypedSchema(
+  z
+    .object({
+      userId: z
+        .string()
+        .min(1, "User ID is required")
+        .min(3, "User ID must be at least 3 characters")
+        .max(50, "User ID must be less than 50 characters")
+        .regex(
+          /^[a-zA-Z0-9_]+$/,
+          "User ID can only contain letters, numbers, and underscores"
+        ),
+      email: z
+        .string()
+        .min(1, "Email is required")
+        .email("Please enter a valid email address"),
+      password: z
+        .string()
+        .min(1, "Password is required")
+        .min(6, "Password must be at least 6 characters")
+        .max(100, "Password must be less than 100 characters")
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+          "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+        ),
+      confirmPassword: z.string().min(1, "Please confirm your password"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    })
+);
+
+const emit = defineEmits<{
+  onSuccess: [data: { username: string; email: string }];
+  onError: [error: string];
+}>();
+
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+const acceptTerms = ref(false);
+
+const onSubmit = async (values: any) => {
+  try {
+    // TODO: Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    emit("onSuccess", {
+      username: values.userId,
+      email: values.email,
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    emit("onError", "Registration failed. Please try again.");
+  }
+};
+</script>
+
 <template>
   <Card class="w-full max-w-md mx-auto">
     <CardHeader class="space-y-1">
@@ -94,23 +173,25 @@
             </template>
           </FormFieldWrapper>
 
-          <div class="flex items-center space-x-2">
+          <Label for="terms" class="text-sm font-normal flex-wrap">
             <Checkbox
               id="terms"
               v-model:checked="acceptTerms"
               @update:modelValue="acceptTerms = !acceptTerms"
             />
-            <Label for="terms" class="text-sm font-normal">
-              I agree to the
-              <Button type="button" variant="link" class="px-0 text-sm"
-                >Terms of Service</Button
-              >
-              and
-              <Button type="button" variant="link" class="px-0 text-sm"
-                >Privacy Policy</Button
-              >
-            </Label>
-          </div>
+            I agree to the
+            <router-link
+              to="/terms-of-service"
+              class="px-0 text-sm hover:underline text-primary"
+              >Terms of Service</router-link
+            >
+            and
+            <router-link
+              to="/privacy-policy"
+              class="px-0 text-sm hover:underline text-primary"
+              >Privacy Policy</router-link
+            >
+          </Label>
 
           <Button
             type="submit"
@@ -127,82 +208,3 @@
     </CardContent>
   </Card>
 </template>
-
-<script setup lang="ts">
-import { ref } from "vue";
-
-import { toTypedSchema } from "@vee-validate/zod";
-
-import { z } from "zod";
-import { Eye, EyeOff } from "lucide-vue-next";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { InputWrapper } from "@/components/ui/input";
-import { Form, FormFieldWrapper } from "@/components/ui/form";
-
-const registerSchema = toTypedSchema(
-  z
-    .object({
-      userId: z
-        .string()
-        .min(1, "User ID is required")
-        .min(3, "User ID must be at least 3 characters")
-        .max(50, "User ID must be less than 50 characters")
-        .regex(
-          /^[a-zA-Z0-9_]+$/,
-          "User ID can only contain letters, numbers, and underscores"
-        ),
-      email: z
-        .string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email address"),
-      password: z
-        .string()
-        .min(1, "Password is required")
-        .min(6, "Password must be at least 6 characters")
-        .max(100, "Password must be less than 100 characters")
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-          "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-        ),
-      confirmPassword: z.string().min(1, "Please confirm your password"),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords don't match",
-      path: ["confirmPassword"],
-    })
-);
-
-const emit = defineEmits<{
-  onSuccess: [data: { username: string; email: string }];
-  onError: [error: string];
-}>();
-
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
-const acceptTerms = ref(false);
-
-const onSubmit = async (values: any) => {
-  try {
-    // TODO: Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    emit("onSuccess", {
-      username: values.userId,
-      email: values.email,
-    });
-  } catch (error) {
-    console.error("Registration error:", error);
-    emit("onError", "Registration failed. Please try again.");
-  }
-};
-</script>

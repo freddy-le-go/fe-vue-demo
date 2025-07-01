@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, watch } from "vue";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { z } from "zod";
@@ -85,10 +85,9 @@ const Email = "Email address";
     <div
       class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4 md:gap-0"
     >
-      <h1 class="text-3xl">
+      <h1 class="text-3xl font-bold">
         <span v-if="isEditMode">Edit Profile</span>
         <span v-else>My Profile</span>
-        <span class="inline-block w-1/3 border-b-2 border-black" />
       </h1>
       <template v-if="isEditMode">
         <Button variant="secondary" @click="cancelEdit">
