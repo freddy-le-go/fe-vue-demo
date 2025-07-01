@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-60 p-6">
+  <aside class="w-full p-2 md:w-60 md:p-6">
     <nav>
       <ul class="space-y-1">
         <li

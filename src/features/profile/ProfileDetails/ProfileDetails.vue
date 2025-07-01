@@ -41,12 +41,12 @@ const schema = toTypedSchema(
   })
 );
 
-const { meta, resetForm } = useForm({
+const { resetForm } = useForm({
   validationSchema: schema,
   initialValues: { ...profile },
 });
 
-function saveProfile(values) {
+function saveProfile(values: any) {
   Object.assign(profile, values);
   isEditMode.value = false;
   resetForm({ values });
@@ -57,12 +57,12 @@ function cancelEdit() {
   isEditMode.value = false;
 }
 
-function onAvatarChange(e, field) {
-  const file = e.target.files?.[0];
+function onAvatarChange(e: Event, field: any) {
+  const file = (e.target as HTMLInputElement).files?.[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = (ev) => {
-      field.onChange(ev.target?.result);
+      field.onChange((ev.target as FileReader)?.result);
     };
     reader.readAsDataURL(file);
   }
@@ -81,8 +81,10 @@ const Email = "Email address";
 </script>
 
 <template>
-  <section class="flex-1 p-8">
-    <div class="flex justify-between items-center mb-8">
+  <section class="flex-1 p-4 md:p-8">
+    <div
+      class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4 md:gap-0"
+    >
       <h1 class="text-3xl">
         <span v-if="isEditMode">Edit Profile</span>
         <span v-else>My Profile</span>
@@ -103,13 +105,13 @@ const Email = "Email address";
     </div>
     <Form
       v-if="isEditMode"
-      class="flex gap-8 items-start"
+      class="flex flex-col md:flex-row gap-4 md:gap-8 items-start"
       :validation-schema="schema"
       :initial-values="{ ...profile }"
       @submit="saveProfile"
-      v-slot="{ values, isSubmitting, meta }"
+      v-slot="{ isSubmitting, meta }"
     >
-      <FormFieldWrapper name="avatarUrl">
+      <FormFieldWrapper name="avatarUrl" class="w-full">
         <template #default="{ field }">
           <div class="flex flex-col items-center">
             <img
@@ -128,7 +130,7 @@ const Email = "Email address";
           </div>
         </template>
       </FormFieldWrapper>
-      <div class="space-y-6 w-full max-w-md">
+      <div class="space-y-6 w-full max-w-full md:max-w-md">
         <FormFieldWrapper name="salutation" :label="Salutation" required>
           <template #default="{ field, errorMessage }">
             <Select v-model="field.value" @update:modelValue="field.onChange">
@@ -203,15 +205,15 @@ const Email = "Email address";
         </div>
       </div>
     </Form>
-    <div v-else class="flex gap-8">
+    <div v-else class="flex flex-col md:flex-row gap-4 md:gap-8">
       <div class="flex flex-col items-center">
         <img
           :src="profile.avatarUrl"
           alt="User Avatar"
-          class="size-40 rounded-full object-cover border border-gray-200"
+          class="size-40 rounded-full object-cover border border-gray-200 aspect-square max-lg:size-32 max-md:size-40 max-lg:min-w-32"
         />
       </div>
-      <div class="space-y-6 w-full max-w-md">
+      <div class="space-y-6 w-full max-w-full md:max-w-md">
         <div class="flex flex-col gap-1">
           <Label>Salutation</Label>
           <div>{{ profile.salutation }}</div>

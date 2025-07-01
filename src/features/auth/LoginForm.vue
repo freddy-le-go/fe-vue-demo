@@ -127,7 +127,7 @@ const emit = defineEmits<{
 const showPassword = ref(false);
 const rememberMe = ref(false);
 
-const onSubmit = async (values: { userId: string; password: string }) => {
+const onSubmit = async (values: any) => {
   try {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 

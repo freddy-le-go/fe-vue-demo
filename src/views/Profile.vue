@@ -21,7 +21,7 @@ function handleLogout() {
         <Button @click="handleLogout" variant="outline">Logout</Button>
       </div>
     </header>
-    <main class="flex max-w-[1440px] mx-auto mt-8 overflow-clip">
+    <main class="flex flex-col md:flex-row max-w-[1440px] mx-auto mt-8 overflow-clip">
       <ProfileSidebar />
       <ProfileDetails />
     </main>

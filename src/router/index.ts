@@ -3,31 +3,27 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Profile from "../views/Profile.vue";
-import Register from "../views/Register.vue";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import("../views/Home.vue"),
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/register",
     name: "Register",
-    component: Register,
+    component: () => import("../views/Register.vue"),
   },
   {
     path: "/profile",
     name: "Profile",
-    component: Profile,
+    component: () => import("../views/Profile.vue"),
     meta: { requiresAuth: true },
   },
 ];

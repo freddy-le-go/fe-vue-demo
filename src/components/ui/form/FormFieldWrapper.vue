@@ -6,13 +6,13 @@ interface IFieldProps {
   name: string;
   value: any;
   onChange: (value: any) => void;
-  onBlur: () => void;
+  onBlur: (e: Event) => void;
   [key: string]: any;
 }
 
 interface IProps {
   name: string;
-  label: string;
+  label?: string;
   component?: Component;
   componentProps?: Record<string, any>;
   class?: string;
@@ -26,20 +26,22 @@ defineSlots<{
     field: IFieldProps;
     errorMessage: string | undefined;
   }) => VNode[];
+  endContent?: () => VNode[];
+  startContent?: () => VNode[];
 }>();
 </script>
 
 <template>
   <FormField :name="name" v-slot="{ field, errorMessage }">
     <FormItem :class="props.class">
-      <FormLabel
+      <FormLabel v-if="label"
         >{{ label }}
         <span v-if="required" class="text-red-500">*</span>
       </FormLabel>
       <FormControl>
         <slot
           v-if="$slots.default"
-          :field="field"
+          :field="{ ...field, value: field.value || '' }"
           :errorMessage="errorMessage"
         />
         <component
@@ -47,7 +49,14 @@ defineSlots<{
           :is="component"
           v-bind="{ ...field, ...componentProps }"
           :isError="!!errorMessage"
-        />
+        >
+          <template v-if="$slots.endContent" #endContent>
+            <slot name="endContent" />
+          </template>
+          <template v-if="$slots.startContent" #startContent>
+            <slot name="startContent" />
+          </template>
+        </component>
       </FormControl>
       <FormMessage />
     </FormItem>
