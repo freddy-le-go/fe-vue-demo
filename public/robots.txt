@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://freddy-vue-1-jul.vercel.app/sitemap.xml
+
+# Allow important pages
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /profile 

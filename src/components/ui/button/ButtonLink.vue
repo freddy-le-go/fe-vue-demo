@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { RouterLink } from 'vue-router'
+
   import type { HTMLAttributes } from 'vue'
+
   import { cn } from '@/lib/utils'
   import { type ButtonVariants, buttonVariants } from '.'
   import type { RouteLocationRaw } from 'vue-router'

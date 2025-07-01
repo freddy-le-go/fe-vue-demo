@@ -1,10 +1,19 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router'
+  import { ArrowLeftIcon } from 'lucide-vue-next'
 
+  import { useSeo } from '@/composables/useSeo'
   import { Button, ButtonLink } from '@/components/ui/button'
-  import RegisterForm from '@/features/auth/RegisterForm.vue'
+  import { RegisterForm } from '@/features/auth/RegisterForm'
 
   const router = useRouter()
+
+  useSeo({
+    title: 'Register - Vue.js Application',
+    description:
+      'Create your account. Join our community with secure registration.',
+    keywords: 'Register, Sign Up, Create Account, Vue.js, Web Application',
+  })
 
   const handleRegisterSuccess = (data: {
     username: string
@@ -24,9 +33,7 @@
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center py-8 px-4"
-  >
+  <main class="flex items-center justify-center py-8 px-4 flex-1">
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-foreground mb-2">Join Us</h1>
@@ -53,22 +60,10 @@
           @click="router.push('/')"
           class="inline-flex items-center text-muted-foreground hover:text-foreground"
         >
-          <svg
-            class="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
+          <ArrowLeftIcon class="w-4 h-4 mr-2" />
           Back to Home
         </Button>
       </div>
     </div>
-  </div>
+  </main>
 </template>

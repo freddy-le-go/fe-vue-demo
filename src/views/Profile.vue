@@ -1,11 +1,21 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router'
 
+  import { useSeo } from '@/composables/useSeo'
   import { Button } from '@/components/ui/button'
   import { ProfileSidebar } from '@/features/profile/ProfileSidebar'
   import { ProfileDetails } from '@/features/profile/ProfileDetails'
 
   const router = useRouter()
+
+  useSeo({
+    title: 'Profile - Vue.js Application',
+    description:
+      'Manage your profile and account settings. Update your personal information.',
+    keywords:
+      'Profile, Account Settings, Personal Information, Vue.js, Web Application',
+  })
+
   function handleLogout() {
     localStorage.removeItem('isAuthenticated')
     router.replace('/login')

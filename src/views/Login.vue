@@ -1,10 +1,21 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router'
 
+  import { ArrowLeftIcon } from 'lucide-vue-next'
+
+  import { useSeo } from '@/composables/useSeo'
+
+  import { LoginForm } from '@/features/auth/LoginForm'
   import { Button, ButtonLink } from '@/components/ui/button'
-  import LoginForm from '@/features/auth/LoginForm.vue'
 
   const router = useRouter()
+
+  useSeo({
+    title: 'Login - Vue.js Application',
+    description:
+      'Sign in to your account. Secure login with modern authentication.',
+    keywords: 'Login, Sign In, Authentication, Vue.js, Web Application',
+  })
 
   const handleLoginSuccess = (data: {
     username: string
@@ -26,9 +37,7 @@
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center py-8 px-4"
-  >
+  <main class="flex items-center justify-center py-8 px-4 flex-1">
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-foreground mb-2">Welcome Back</h1>
@@ -52,22 +61,10 @@
           @click="router.push('/')"
           class="inline-flex items-center text-muted-foreground hover:text-foreground"
         >
-          <svg
-            class="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
+          <ArrowLeftIcon class="w-4 h-4 mr-2" />
           Back to Home
         </Button>
       </div>
     </div>
-  </div>
+  </main>
 </template>
