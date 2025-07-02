@@ -4,7 +4,7 @@ import { AuthApi, type ILoginRequest, type IRegisterRequest } from '@/lib/api'
 import { queryKeys } from '@/lib/api/queryKeys'
 import { useAuthStore } from '@/stores/auth'
 
-export function useLoginMutation() {
+export function useLoginMutation () {
   const queryClient = useQueryClient()
   const router = useRouter()
   const authStore = useAuthStore()
@@ -34,13 +34,13 @@ export function useLoginMutation() {
 
       router.push('/profile')
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.error('Login failed:', error)
     },
   })
 }
 
-export function useRegisterMutation() {
+export function useRegisterMutation () {
   const queryClient = useQueryClient()
   const router = useRouter()
 
@@ -56,13 +56,13 @@ export function useRegisterMutation() {
 
       router.replace('/login')
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.error('Registration failed:', error)
     },
   })
 }
 
-export function useLogoutMutation() {
+export function useLogoutMutation () {
   const queryClient = useQueryClient()
   const router = useRouter()
   const authStore = useAuthStore()
@@ -83,7 +83,7 @@ export function useLogoutMutation() {
 
       router.replace('/')
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.error('Logout failed:', error)
       authStore.user = null
       authStore.isAuthenticated = false
@@ -95,7 +95,7 @@ export function useLogoutMutation() {
   })
 }
 
-export function useValidateTokenQuery(token: string | null) {
+export function useValidateTokenQuery (token: string | null) {
   return useQuery({
     queryKey: queryKeys.auth.user(),
     queryFn: async () => {

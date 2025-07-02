@@ -18,73 +18,63 @@ export const useAuthStore = defineStore('auth', {
     isLoading: false,
   }),
   actions: {
-    async login(userId: string, password: string, rememberMe: boolean = false) {
+    async login (userId: string, password: string, rememberMe: boolean = false) {
       this.isLoading = true
 
-      try {
-        const res = await AuthApi.login({ userId, password })
+      const res = await AuthApi.login({ userId, password })
 
-        this.user = res.data.user
-        this.isAuthenticated = true
-        this.rememberMe = rememberMe
-        this.token = res.data.token
+      this.user = res.data.user
+      this.isAuthenticated = true
+      this.rememberMe = rememberMe
+      this.token = res.data.token
 
-        if (rememberMe) {
-          Cookies.set('auth_user', JSON.stringify(res.data.user), {
-            expires: 7,
-          })
-          Cookies.set('auth_token', res.data.token, { expires: 7 })
-        } else {
-          Cookies.set('auth_user', JSON.stringify(res.data.user), {
-            expires: 1,
-          })
-          Cookies.set('auth_token', res.data.token, { expires: 1 })
-        }
-
-        return res
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
+      if (rememberMe) {
+        Cookies.set('auth_user', JSON.stringify(res.data.user), {
+          expires: 7,
+        })
+        Cookies.set('auth_token', res.data.token, { expires: 7 })
+      } else {
+        Cookies.set('auth_user', JSON.stringify(res.data.user), {
+          expires: 1,
+        })
+        Cookies.set('auth_token', res.data.token, { expires: 1 })
       }
+
+      this.isLoading = false
+      return res
     },
 
-    async register(userData: IRegisterRequest, rememberMe: boolean = false) {
+    async register (userData: IRegisterRequest, rememberMe: boolean = false) {
       this.isLoading = true
 
-      try {
-        const response = await AuthApi.register(userData)
+      const response = await AuthApi.register(userData)
 
-        this.user = response.data.user
-        this.isAuthenticated = true
-        this.rememberMe = rememberMe
-        this.token = response.data.token
+      this.user = response.data.user
+      this.isAuthenticated = true
+      this.rememberMe = rememberMe
+      this.token = response.data.token
 
-        if (rememberMe) {
-          Cookies.set('auth_user', JSON.stringify(response.data.user), {
-            expires: 7,
-          })
-          Cookies.set('auth_token', response.data.token, { expires: 7 })
-        } else {
-          Cookies.set('auth_user', JSON.stringify(response.data.user), {
-            expires: 1,
-          })
-          Cookies.set('auth_token', response.data.token, { expires: 1 })
-        }
-
-        return response
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
+      if (rememberMe) {
+        Cookies.set('auth_user', JSON.stringify(response.data.user), {
+          expires: 7,
+        })
+        Cookies.set('auth_token', response.data.token, { expires: 7 })
+      } else {
+        Cookies.set('auth_user', JSON.stringify(response.data.user), {
+          expires: 1,
+        })
+        Cookies.set('auth_token', response.data.token, { expires: 1 })
       }
+
+      this.isLoading = false
+      return response
     },
-    async logout() {
+    async logout () {
       this.isLoading = true
 
       try {
         await AuthApi.logout()
-      } catch (error) {
+      } catch (error: Error | unknown) {
         console.error('Logout error:', error)
       } finally {
         this.user = null
@@ -99,7 +89,7 @@ export const useAuthStore = defineStore('auth', {
         window.location.reload()
       }
     },
-    async loadFromCookie() {
+    async loadFromCookie () {
       const user = Cookies.get('auth_user')
       const token = Cookies.get('auth_token')
 
@@ -110,30 +100,26 @@ export const useAuthStore = defineStore('auth', {
           this.isAuthenticated = true
           this.token = token
           this.rememberMe = true
-        } catch (error) {
+        } catch {
           this.logout()
         }
       }
     },
 
-    async updateUser(userData: IUpdateProfileRequest) {
+    async updateUser (userData: IUpdateProfileRequest) {
       if (!this.user) return
 
-      try {
-        const response = await ProfileApi.updateProfile(
-          this.user.userId,
-          userData
-        )
-        this.user = response.data.user
+      const response = await ProfileApi.updateProfile(
+        this.user.userId,
+        userData,
+      )
+      this.user = response.data.user
 
-        Cookies.set('auth_user', JSON.stringify(this.user), {
-          expires: this.rememberMe ? 7 : 1,
-        })
+      Cookies.set('auth_user', JSON.stringify(this.user), {
+        expires: this.rememberMe ? 7 : 1,
+      })
 
-        return response
-      } catch (error) {
-        throw error
-      }
+      return response
     },
   },
 })

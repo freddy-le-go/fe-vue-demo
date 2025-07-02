@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { ProfileApi, type IUpdateProfileRequest } from '@/lib/api'
 import { queryKeys } from '@/lib/api/queryKeys'
 
-export function useProfileQuery(userId: string) {
+export function useProfileQuery (userId: string) {
   return useQuery({
     queryKey: queryKeys.profile.user(userId),
     queryFn: async () => {
@@ -14,7 +14,7 @@ export function useProfileQuery(userId: string) {
   })
 }
 
-export function useProfileStatsQuery(userId: string) {
+export function useProfileStatsQuery (userId: string) {
   return useQuery({
     queryKey: queryKeys.profile.stats(userId),
     queryFn: async () => {
@@ -26,7 +26,7 @@ export function useProfileStatsQuery(userId: string) {
   })
 }
 
-export function useUpdateProfileMutation() {
+export function useUpdateProfileMutation () {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -51,7 +51,7 @@ export function useUpdateProfileMutation() {
   })
 }
 
-export function useUploadAvatarMutation() {
+export function useUploadAvatarMutation () {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -70,7 +70,7 @@ export function useUploadAvatarMutation() {
   })
 }
 
-export function useDeleteAvatarMutation() {
+export function useDeleteAvatarMutation () {
   const queryClient = useQueryClient()
 
   return useMutation({

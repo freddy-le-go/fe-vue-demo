@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useAuthStore } from '@/stores/auth'
-  import { ButtonLink } from '@/components/ui/button'
-  import { Button } from '@/components/ui/button'
-  import { Menu } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { ButtonLink } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { Menu } from 'lucide-vue-next'
 
-  const showMenu = ref(false)
-  const authStore = useAuthStore()
+const showMenu = ref(false)
+const authStore = useAuthStore()
 
-  const handleLogout = () => {
-    authStore.logout()
-    showMenu.value = false
-  }
+const handleLogout = () => {
+  authStore.logout()
+  showMenu.value = false
+}
 </script>
 
 <template>

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { useSeo } from '@/composables/useSeo'
-  import { ProfileSidebar } from '@/features/profile/ProfileSidebar'
+import { useSeo } from '@/composables/useSeo'
+import { ProfileSidebar } from '@/features/profile/ProfileSidebar'
 
-  useSeo({
-    title: 'Profile - Vue.js Application',
-    description:
+useSeo({
+  title: 'Profile - Vue.js Application',
+  description:
       'Manage your profile and account settings. Update your personal information.',
-    keywords:
+  keywords:
       'Profile, Account Settings, Personal Information, Vue.js, Web Application',
-  })
+})
 </script>
 
 <template>

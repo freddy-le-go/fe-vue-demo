@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 import { ProfileApi, type IUser, type IUpdateProfileRequest } from '@/lib/api'
 
-export function useProfile() {
+export function useProfile () {
   const profile = ref<IUser | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -15,8 +15,8 @@ export function useProfile() {
       const response = await ProfileApi.getProfile(userId)
       profile.value = response.data
       return response
-    } catch (err: any) {
-      error.value = err.message || 'Failed to load profile'
+    } catch (err: Error | unknown) {
+      error.value = (err as Error)?.message || 'Failed to load profile'
       throw err
     } finally {
       isLoading.value = false
@@ -31,8 +31,8 @@ export function useProfile() {
       const response = await ProfileApi.updateProfile(userId, data)
       profile.value = response.data.user
       return response
-    } catch (err: any) {
-      error.value = err.message || 'Failed to update profile'
+    } catch (err: Error | unknown) {
+      error.value = (err as Error)?.message || 'Failed to update profile'
       throw err
     } finally {
       isLoading.value = false
@@ -49,8 +49,8 @@ export function useProfile() {
         profile.value.avatar = response.data.avatarUrl
       }
       return response
-    } catch (err: any) {
-      error.value = err.message || 'Failed to upload avatar'
+    } catch (err: Error | unknown) {
+      error.value = (err as Error)?.message || 'Failed to upload avatar'
       throw err
     } finally {
       isLoading.value = false
@@ -67,8 +67,8 @@ export function useProfile() {
         profile.value.avatar = ''
       }
       return response
-    } catch (err: any) {
-      error.value = err.message || 'Failed to delete avatar'
+    } catch (err: Error | unknown) {
+      error.value = (err as Error)?.message || 'Failed to delete avatar'
       throw err
     } finally {
       isLoading.value = false
@@ -82,8 +82,8 @@ export function useProfile() {
     try {
       const response = await ProfileApi.getUserStats(userId)
       return response
-    } catch (err: any) {
-      error.value = err.message || 'Failed to load user statistics'
+    } catch (err: Error | unknown) {
+      error.value = (err as Error)?.message || 'Failed to load user statistics'
       throw err
     } finally {
       isLoading.value = false

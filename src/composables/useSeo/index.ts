@@ -2,7 +2,7 @@ import { useHead } from '@vueuse/head'
 
 import type { ISeoOptions } from './types'
 
-export function useSeo(options: ISeoOptions = {}) {
+export function useSeo (options: ISeoOptions = {}) {
   const {
     title = 'Vue.js Application',
     description = 'Modern web application built with Vue 3, TypeScript, and Tailwind CSS',

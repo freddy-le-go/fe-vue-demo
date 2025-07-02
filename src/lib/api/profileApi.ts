@@ -22,7 +22,7 @@ const simulateSuccess = <T>(data: T, message: string): IApiResponse<T> => ({
 })
 
 export class ProfileApi {
-  static async getProfile(userId: string): Promise<IApiResponse<IUser>> {
+  static async getProfile (userId: string): Promise<IApiResponse<IUser>> {
     await delay(800)
 
     try {
@@ -38,9 +38,9 @@ export class ProfileApi {
     }
   }
 
-  static async updateProfile(
+  static async updateProfile (
     userId: string,
-    request: IUpdateProfileRequest
+    request: IUpdateProfileRequest,
   ): Promise<IApiResponse<IUpdateProfileResponse>> {
     await delay(1200)
 
@@ -53,7 +53,7 @@ export class ProfileApi {
 
       if (request.email) {
         const existingUser = mockUsers.find(
-          u => u.email === request.email && u.userId !== userId
+          u => u.email === request.email && u.userId !== userId,
         )
 
         if (existingUser) {
@@ -78,9 +78,9 @@ export class ProfileApi {
     }
   }
 
-  static async uploadAvatar(
+  static async uploadAvatar (
     userId: string,
-    file: File
+    file: File,
   ): Promise<IApiResponse<{ avatarUrl: string }>> {
     await delay(2000)
 
@@ -101,8 +101,8 @@ export class ProfileApi {
     }
   }
 
-  static async deleteAvatar(
-    userId: string
+  static async deleteAvatar (
+    userId: string,
   ): Promise<IApiResponse<{ message: string }>> {
     await delay(600)
 
@@ -117,14 +117,14 @@ export class ProfileApi {
 
       return simulateSuccess(
         { message: 'Avatar deleted successfully' },
-        'Avatar deleted successfully'
+        'Avatar deleted successfully',
       )
     } catch (error) {
       throw error
     }
   }
 
-  static async getUserStats(userId: string): Promise<
+  static async getUserStats (userId: string): Promise<
     IApiResponse<{
       postsCount: number
       followersCount: number
