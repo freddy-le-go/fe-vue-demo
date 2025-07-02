@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { ref } from 'vue'
 
-  import { toTypedSchema } from '@vee-validate/zod'
-
-  import { z } from 'zod'
   import { Eye, EyeOff } from 'lucide-vue-next'
+
+  import type { SubmissionHandler } from 'vee-validate'
 
   import { Card } from '@/components/ui/card'
   import { Label } from '@/components/ui/label'
@@ -13,62 +12,69 @@
   import { InputWrapper } from '@/components/ui/input'
   import { Form, FormFieldWrapper } from '@/components/ui/form'
 
-  const loginSchema = toTypedSchema(
-    z.object({
-      userId: z
-        .string()
-        .min(1, 'User ID is required')
-        .min(3, 'User ID must be at least 3 characters')
-        .max(50, 'User ID must be less than 50 characters')
-        .regex(
-          /^[a-zA-Z0-9_]+$/,
-          'User ID can only contain letters, numbers, and underscores'
-        ),
-      password: z
-        .string()
-        .min(1, 'Password is required')
-        .min(6, 'Password must be at least 6 characters')
-        .max(100, 'Password must be less than 100 characters')
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-          'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-        ),
-    })
-  )
+  import { loginSchema } from './composables'
+
+  import type { LoginFormData } from './types'
+
+  import { useLoginMutation } from '@/composables/useAuthQueries'
 
   const emit = defineEmits<{
-    onSuccess: [data: { username: string; rememberMe: boolean }]
+    onSuccess: [data: { userId: string; password: string; rememberMe: boolean }]
     onError: [error: string]
   }>()
 
-  const showPassword = ref(false)
   const rememberMe = ref(false)
+  const showPassword = ref(false)
+  const userIdError = ref<string | null>(null)
+  const passwordError = ref<string | null>(null)
 
-  const onSubmit = async (values: any) => {
+  const loginMutation = useLoginMutation()
+
+  const onSubmit = async (values: LoginFormData) => {
+    userIdError.value = null
+    passwordError.value = null
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-
-      emit('onSuccess', {
-        username: values.userId,
+      await loginMutation.mutateAsync({
+        request: {
+          userId: values.userId,
+          password: values.password,
+        },
         rememberMe: rememberMe.value,
       })
-    } catch (error) {
-      console.error('Login error:', error)
-      emit('onError', 'Login failed. Please try again.')
+
+      emit('onSuccess', {
+        userId: values.userId,
+        password: values.password,
+        rememberMe: rememberMe.value,
+      })
+    } catch (error: any) {
+      const errorMessage = error.message || 'Login failed. Please try again.'
+
+      if (error.message === 'Invalid credentials') {
+        userIdError.value = 'Invalid user ID or password'
+        passwordError.value = 'Invalid user ID or password'
+      } else {
+        emit('onError', errorMessage)
+      }
     }
   }
 
-  const handleSocialLogin = (provider: string): void => {
-    console.log(`Social login with ${provider}`)
+  const togglePasswordVisibility = (): void => {
+    showPassword.value = !showPassword.value
+  }
+
+  const clearErrors = (): void => {
+    userIdError.value = null
+    passwordError.value = null
   }
 </script>
 
 <template>
   <Card class="p-6">
     <Form
-      @submit="onSubmit"
+      @submit="onSubmit as unknown as SubmissionHandler"
       :validation-schema="loginSchema"
-      v-slot="{ isSubmitting }"
     >
       <div class="space-y-6">
         <FormFieldWrapper
@@ -78,14 +84,19 @@
           :component="InputWrapper"
           :componentProps="{
             placeholder: 'Enter user ID',
-            disabled: isSubmitting,
+            disabled: loginMutation.isPending.value,
             required: true,
+            onInput: clearErrors,
           }"
         >
           <template #endContent>
             <UserIcon />
           </template>
         </FormFieldWrapper>
+
+        <div v-if="userIdError" class="text-sm text-destructive">
+          {{ userIdError }}
+        </div>
 
         <FormFieldWrapper
           name="password"
@@ -95,8 +106,9 @@
           :componentProps="{
             type: showPassword ? 'text' : 'password',
             placeholder: 'Enter your password',
-            disabled: isSubmitting,
+            disabled: loginMutation.isPending.value,
             required: true,
+            onInput: clearErrors,
           }"
         >
           <template #endContent>
@@ -104,9 +116,10 @@
               type="button"
               variant="ghost"
               size="sm"
-              @click="showPassword = !showPassword"
+              @click="togglePasswordVisibility"
               class="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-              :disabled="isSubmitting"
+              :disabled="loginMutation.isPending.value"
+              :aria-label="showPassword ? 'Hide password' : 'Show password'"
             >
               <EyeOff v-if="showPassword" class="h-4 w-4" />
               <Eye v-else class="h-4 w-4" />
@@ -114,9 +127,17 @@
           </template>
         </FormFieldWrapper>
 
+        <div v-if="passwordError" class="text-sm text-destructive">
+          {{ passwordError }}
+        </div>
+
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <Checkbox id="remember" v-model:checked="rememberMe" />
+            <Checkbox
+              id="remember"
+              v-model:checked="rememberMe"
+              :disabled="loginMutation.isPending.value"
+            />
             <Label for="remember" class="text-sm font-normal"
               >Keep me logged in</Label
             >
@@ -128,10 +149,11 @@
 
         <Button
           type="submit"
-          :isLoading="isSubmitting"
+          :isLoading="loginMutation.isPending.value"
           loadingText="Signing in..."
           class="w-full"
           size="lg"
+          :disabled="loginMutation.isPending.value"
         >
           Sign In
         </Button>

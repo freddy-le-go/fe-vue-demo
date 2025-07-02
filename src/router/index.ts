@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
+import Cookies from 'js-cookie'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -41,6 +43,52 @@ const routes: RouteRecordRaw[] = [
       description:
         'Manage your profile and account settings. Update your personal information.',
     },
+    children: [
+      {
+        path: '',
+        redirect: '/profile/basic',
+      },
+      {
+        path: 'basic',
+        name: 'ProfileBasic',
+        component: () => import('../views/profile/BasicDetails/template.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Basic Details - Profile',
+          description: 'Manage your basic profile information.',
+        },
+      },
+      {
+        path: 'additional',
+        name: 'ProfileAdditional',
+        component: () => import('../views/profile/AdditionalDetails.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Additional Details - Profile',
+          description: 'Manage your additional profile information.',
+        },
+      },
+      {
+        path: 'spouse',
+        name: 'ProfileSpouse',
+        component: () => import('../views/profile/SpouseDetails.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Spouse Details - Profile',
+          description: 'Manage your spouse information.',
+        },
+      },
+      {
+        path: 'preferences',
+        name: 'ProfilePreferences',
+        component: () => import('../views/profile/PersonalPreferences.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Personal Preferences - Profile',
+          description: 'Manage your personal preferences.',
+        },
+      },
+    ],
   },
 ]
 
@@ -50,9 +98,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+  const authToken = Cookies.get('auth_token')
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
+  if (to.meta.requiresAuth && !authToken) {
     next('/login')
   } else {
     next()

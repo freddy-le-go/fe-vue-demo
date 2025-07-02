@@ -1,1 +1,1 @@
-export { default as RegisterForm } from './RegisterForm.vue'
+export { default as RegisterForm } from './template.vue'

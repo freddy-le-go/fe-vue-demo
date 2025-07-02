@@ -37,7 +37,7 @@
           <ButtonLink
             :to="item.path"
             variant="ghost"
-            class="w-full justify-start h-8 px-4 font-inherit"
+            class="w-full justify-start h-8 px-0 font-inherit"
             :class="
               isActive(item.path) ? 'text-foreground' : 'text-muted-foreground'
             "

@@ -6,6 +6,8 @@
   import { z } from 'zod'
   import { Eye, EyeOff } from 'lucide-vue-next'
 
+  import type { SubmissionHandler } from 'vee-validate'
+
   import {
     Card,
     CardContent,
@@ -18,6 +20,9 @@
   import { Checkbox } from '@/components/ui/checkbox'
   import { InputWrapper } from '@/components/ui/input'
   import { Form, FormFieldWrapper } from '@/components/ui/form'
+  import { useRegisterMutation } from '@/composables/useAuthQueries'
+
+  import type { IRegisterRequest } from '@/lib/api'
 
   const registerSchema = toTypedSchema(
     z
@@ -35,6 +40,14 @@
           .string()
           .min(1, 'Email is required')
           .email('Please enter a valid email address'),
+        firstName: z
+          .string()
+          .min(1, 'First name is required')
+          .min(2, 'First name must be at least 2 characters'),
+        lastName: z
+          .string()
+          .min(1, 'Last name is required')
+          .min(2, 'Last name must be at least 2 characters'),
         password: z
           .string()
           .min(1, 'Password is required')
@@ -53,7 +66,7 @@
   )
 
   const emit = defineEmits<{
-    onSuccess: [data: { username: string; email: string }]
+    onSuccess: [data: IRegisterRequest]
     onError: [error: string]
   }>()
 
@@ -61,18 +74,18 @@
   const showConfirmPassword = ref(false)
   const acceptTerms = ref(false)
 
-  const onSubmit = async (values: any) => {
-    try {
-      // TODO: Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500))
+  const registerMutation = useRegisterMutation()
 
-      emit('onSuccess', {
-        username: values.userId,
-        email: values.email,
+  const onSubmit = async (values: IRegisterRequest) => {
+    try {
+      await registerMutation.mutateAsync({
+        request: values,
       })
-    } catch (error) {
+
+      emit('onSuccess', values)
+    } catch (error: any) {
       console.error('Registration error:', error)
-      emit('onError', 'Registration failed. Please try again.')
+      emit('onError', error.message || 'Registration failed. Please try again.')
     }
   }
 </script>
@@ -89,9 +102,8 @@
     </CardHeader>
     <CardContent>
       <Form
-        @submit="onSubmit"
+        @submit="onSubmit as unknown as SubmissionHandler<IRegisterRequest>"
         :validation-schema="registerSchema"
-        v-slot="{ isSubmitting }"
       >
         <div class="space-y-4">
           <FormFieldWrapper
@@ -101,7 +113,7 @@
             :component="InputWrapper"
             :componentProps="{
               placeholder: 'Enter user ID',
-              disabled: isSubmitting,
+              disabled: registerMutation.isPending.value,
               required: true,
             }"
           />
@@ -114,10 +126,36 @@
             :componentProps="{
               type: 'email',
               placeholder: 'Enter your email',
-              disabled: isSubmitting,
+              disabled: registerMutation.isPending.value,
               required: true,
             }"
           />
+
+          <div class="grid grid-cols-2 gap-4">
+            <FormFieldWrapper
+              name="firstName"
+              label="First Name"
+              required
+              :component="InputWrapper"
+              :componentProps="{
+                placeholder: 'First name',
+                disabled: registerMutation.isPending.value,
+                required: true,
+              }"
+            />
+
+            <FormFieldWrapper
+              name="lastName"
+              label="Last Name"
+              required
+              :component="InputWrapper"
+              :componentProps="{
+                placeholder: 'Last name',
+                disabled: registerMutation.isPending.value,
+                required: true,
+              }"
+            />
+          </div>
 
           <FormFieldWrapper
             name="password"
@@ -127,7 +165,7 @@
             :componentProps="{
               type: showPassword ? 'text' : 'password',
               placeholder: 'Enter your password',
-              disabled: isSubmitting,
+              disabled: registerMutation.isPending.value,
               required: true,
             }"
           >
@@ -138,7 +176,7 @@
                 size="sm"
                 @click="showPassword = !showPassword"
                 class="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-                :disabled="isSubmitting"
+                :disabled="registerMutation.isPending.value"
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
                 <Eye v-else class="h-4 w-4" />
@@ -154,7 +192,7 @@
             :componentProps="{
               type: showConfirmPassword ? 'text' : 'password',
               placeholder: 'Confirm your password',
-              disabled: isSubmitting,
+              disabled: registerMutation.isPending.value,
               required: true,
             }"
           >
@@ -165,7 +203,7 @@
                 size="sm"
                 @click="showConfirmPassword = !showConfirmPassword"
                 class="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-                :disabled="isSubmitting"
+                :disabled="registerMutation.isPending.value"
               >
                 <EyeOff v-if="showConfirmPassword" class="h-4 w-4" />
                 <Eye v-else class="h-4 w-4" />
@@ -176,8 +214,8 @@
           <Label for="terms" class="text-sm font-normal flex-wrap">
             <Checkbox
               id="terms"
-              v-model:checked="acceptTerms"
-              @update:modelValue="acceptTerms = !acceptTerms"
+              v-model="acceptTerms"
+              :disabled="registerMutation.isPending.value"
             />
             I agree to the
             <router-link
@@ -195,8 +233,8 @@
 
           <Button
             type="submit"
-            :disabled="!acceptTerms"
-            :isLoading="isSubmitting"
+            :disabled="!acceptTerms || registerMutation.isPending.value"
+            :isLoading="registerMutation.isPending.value"
             loadingText="Creating account..."
             class="w-full"
             size="lg"

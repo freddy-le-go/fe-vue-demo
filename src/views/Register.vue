@@ -2,10 +2,14 @@
   import { useRouter } from 'vue-router'
   import { ArrowLeftIcon } from 'lucide-vue-next'
 
+  import { useAuthStore } from '@/stores/auth'
   import { useSeo } from '@/composables/useSeo'
-  import { Button, ButtonLink } from '@/components/ui/button'
+  import { ButtonLink } from '@/components/ui/button'
   import { RegisterForm } from '@/features/auth/RegisterForm'
 
+  import type { IRegisterRequest } from '@/lib/api'
+
+  const authStore = useAuthStore()
   const router = useRouter()
 
   useSeo({
@@ -15,15 +19,11 @@
     keywords: 'Register, Sign Up, Create Account, Vue.js, Web Application',
   })
 
-  const handleRegisterSuccess = (data: {
-    username: string
-    email: string
-  }): void => {
-    localStorage.setItem('isAuthenticated', 'true')
-    localStorage.setItem('username', data.username)
-    localStorage.setItem('email', data.email)
-
-    router.replace('/login')
+  const handleRegisterSuccess = async (
+    data: IRegisterRequest
+  ): Promise<void> => {
+    await authStore.register(data)
+    router.replace('/profile')
   }
 
   const handleRegisterError = (error: string): void => {
@@ -55,14 +55,10 @@
       </div>
 
       <div class="text-center mt-4">
-        <Button
-          variant="ghost"
-          @click="router.push('/')"
-          class="inline-flex items-center text-muted-foreground hover:text-foreground"
-        >
+        <ButtonLink to="/" variant="ghost">
           <ArrowLeftIcon class="w-4 h-4 mr-2" />
           Back to Home
-        </Button>
+        </ButtonLink>
       </div>
     </div>
   </main>

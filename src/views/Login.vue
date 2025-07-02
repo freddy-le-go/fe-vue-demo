@@ -3,10 +3,11 @@
 
   import { ArrowLeftIcon } from 'lucide-vue-next'
 
+  import { useAuthStore } from '@/stores/auth'
   import { useSeo } from '@/composables/useSeo'
 
+  import { ButtonLink } from '@/components/ui/button'
   import { LoginForm } from '@/features/auth/LoginForm'
-  import { Button, ButtonLink } from '@/components/ui/button'
 
   const router = useRouter()
 
@@ -17,22 +18,22 @@
     keywords: 'Login, Sign In, Authentication, Vue.js, Web Application',
   })
 
-  const handleLoginSuccess = (data: {
-    username: string
+  const authStore = useAuthStore()
+
+  const handleLoginSuccess = async (data: {
+    userId: string
+    password: string
     rememberMe: boolean
-  }): void => {
-    localStorage.setItem('isAuthenticated', 'true')
-    localStorage.setItem('username', data.username)
-    if (data.rememberMe) {
-      localStorage.setItem('rememberMe', 'true')
-    }
+  }): Promise<void> => {
+    await authStore.login(data.userId, data.password, data.rememberMe)
 
     router.replace('/profile')
   }
 
   const handleLoginError = (error: string): void => {
-    console.error('Login error:', error)
-    alert(error)
+    if (error !== 'Invalid credentials') {
+      alert(error)
+    }
   }
 </script>
 
@@ -56,14 +57,10 @@
       </div>
 
       <div class="text-center mt-4">
-        <Button
-          variant="ghost"
-          @click="router.push('/')"
-          class="inline-flex items-center text-muted-foreground hover:text-foreground"
-        >
+        <ButtonLink to="/" variant="ghost">
           <ArrowLeftIcon class="w-4 h-4 mr-2" />
           Back to Home
-        </Button>
+        </ButtonLink>
       </div>
     </div>
   </main>
