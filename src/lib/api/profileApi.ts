@@ -91,7 +91,7 @@ export class ProfileApi {
         throw simulateError('User not found', 'USER_NOT_FOUND')
       }
 
-      const avatarUrl = `https://images.unsplash.com/photo-${Math.random().toString(36).substr(2, 9)}?w=150&h=150&fit=crop&crop=face`
+      const avatarUrl = URL.createObjectURL(file)
 
       mockUsers[userIndex].avatar = avatarUrl
 

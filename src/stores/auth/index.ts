@@ -95,6 +95,8 @@ export const useAuthStore = defineStore('auth', {
 
         Cookies.remove('auth_user')
         Cookies.remove('auth_token')
+
+        window.location.reload()
       }
     },
     async loadFromCookie() {

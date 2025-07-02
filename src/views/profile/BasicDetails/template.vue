@@ -3,7 +3,14 @@
   import { z } from 'zod'
   import { toTypedSchema } from '@vee-validate/zod'
 
-  import { Pencil, Save, X, ArrowLeftIcon, Upload } from 'lucide-vue-next'
+  import {
+    Pencil,
+    Save,
+    X,
+    ArrowLeftIcon,
+    Upload,
+    UserIcon,
+  } from 'lucide-vue-next'
 
   import {
     useProfileQuery,
@@ -73,9 +80,20 @@
     if (!file || !userId) return
 
     try {
+      const blobUrl = URL.createObjectURL(file)
+
+      if (profile.value) {
+        profile.value.avatar = blobUrl
+      }
+
       await uploadAvatarMutation.mutateAsync({ userId, file })
+
+      URL.revokeObjectURL(blobUrl)
     } catch {
       alert('Avatar upload failed. Please try again.')
+      if (profile.value) {
+        profile.value.avatar = profileResponse.value?.data?.avatar || ''
+      }
     }
   }
 
@@ -135,9 +153,9 @@
           />
           <div
             v-else
-            class="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
+            class="w-32 h-32 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center"
           >
-            <UserIcon class="size-16" />
+            <UserIcon class="w-16 h-16 text-gray-400" />
           </div>
           <div
             v-if="uploadAvatarMutation.isPending.value"
@@ -163,7 +181,9 @@
           >
             <Upload class="size-4 mr-2" />
             {{
-              uploadAvatarMutation.isPending ? 'Uploading...' : 'Upload Avatar'
+              uploadAvatarMutation.isPending.value
+                ? 'Uploading...'
+                : 'Upload Avatar'
             }}
           </Button>
           <p class="text-xs text-muted-foreground text-center">
