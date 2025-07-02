@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', {
     isLoading: false,
   }),
   actions: {
-    async login (userId: string, password: string, rememberMe: boolean = false) {
+    async login(userId: string, password: string, rememberMe: boolean = false) {
       this.isLoading = true
 
       const res = await AuthApi.login({ userId, password })
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', {
       return res
     },
 
-    async register (userData: IRegisterRequest, rememberMe: boolean = false) {
+    async register(userData: IRegisterRequest, rememberMe: boolean = false) {
       this.isLoading = true
 
       const response = await AuthApi.register(userData)
@@ -69,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
       this.isLoading = false
       return response
     },
-    async logout () {
+    async logout() {
       this.isLoading = true
 
       try {
@@ -89,7 +89,7 @@ export const useAuthStore = defineStore('auth', {
         window.location.reload()
       }
     },
-    async loadFromCookie () {
+    async loadFromCookie() {
       const user = Cookies.get('auth_user')
       const token = Cookies.get('auth_token')
 
@@ -106,12 +106,12 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async updateUser (userData: IUpdateProfileRequest) {
+    async updateUser(userData: IUpdateProfileRequest) {
       if (!this.user) return
 
       const response = await ProfileApi.updateProfile(
         this.user.userId,
-        userData,
+        userData
       )
       this.user = response.data.user
 

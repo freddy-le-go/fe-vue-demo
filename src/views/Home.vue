@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useSeo } from '@/composables/useSeo'
+  import { useSeo } from '@/composables/useSeo'
 
-useSeo({
-  title: 'Home - Vue.js Application',
-  description:
+  useSeo({
+    title: 'Home - Vue.js Application',
+    description:
       'Welcome to our Vue.js application. Explore our modern web application built with Vue 3, TypeScript, and Tailwind CSS.',
-  keywords: 'Vue.js, Home, TypeScript, Tailwind CSS, Web Application',
-})
+    keywords: 'Vue.js, Home, TypeScript, Tailwind CSS, Web Application',
+  })
 </script>
 
 <template>

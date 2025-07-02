@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { cn } from '@/lib/utils'
+  import { computed } from 'vue'
+  import { cn } from '@/lib/utils'
 
   interface Props {
     type?: 'spinner' | 'dots' | 'pulse' | 'bars' | 'ring'
@@ -9,25 +9,25 @@ import { cn } from '@/lib/utils'
     class?: string
   }
 
-const props = withDefaults(defineProps<Props>(), {
-  type: 'spinner',
-  size: 'md',
-  color: 'current',
-})
+  const props = withDefaults(defineProps<Props>(), {
+    type: 'spinner',
+    size: 'md',
+    color: 'current',
+  })
 
-const sizeClasses = computed(() => ({
-  sm: 'h-4 w-4',
-  md: 'h-5 w-5',
-  lg: 'h-6 w-6',
-  xl: 'h-8 w-8',
-}))
+  const sizeClasses = computed(() => ({
+    sm: 'h-4 w-4',
+    md: 'h-5 w-5',
+    lg: 'h-6 w-6',
+    xl: 'h-8 w-8',
+  }))
 
-const colorClasses = computed(() => ({
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  white: 'text-white',
-  current: 'text-current',
-}))
+  const colorClasses = computed(() => ({
+    primary: 'text-primary',
+    secondary: 'text-secondary',
+    white: 'text-white',
+    current: 'text-current',
+  }))
 </script>
 
 <template>

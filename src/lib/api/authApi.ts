@@ -15,7 +15,7 @@ import {
   getCurrentTimestamp,
 } from './mockData'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const simulateError = (message: string, code: string): IApiError => ({
   message,
@@ -30,12 +30,12 @@ const simulateSuccess = <T>(data: T, message: string): IApiResponse<T> => ({
 })
 
 export class AuthApi {
-  static async login (
-    request: ILoginRequest,
+  static async login(
+    request: ILoginRequest
   ): Promise<IApiResponse<ILoginResponse>> {
     await delay(1000)
 
-    const user = mockUsers.find((u) => u.userId === request.userId)
+    const user = mockUsers.find(u => u.userId === request.userId)
     if (!user) {
       throw simulateError('Invalid credentials', 'INVALID_CREDENTIALS')
     }
@@ -57,13 +57,13 @@ export class AuthApi {
     return simulateSuccess(response, 'Login successful')
   }
 
-  static async register (
-    request: IRegisterRequest,
+  static async register(
+    request: IRegisterRequest
   ): Promise<IApiResponse<IRegisterResponse>> {
     await delay(1500)
 
     const existingUser = mockUsers.find(
-      (u) => u.userId === request.userId || u.email === request.email,
+      u => u.userId === request.userId || u.email === request.email
     )
 
     if (existingUser) {
@@ -103,20 +103,20 @@ export class AuthApi {
     return simulateSuccess(response, 'Registration successful')
   }
 
-  static async validateToken (
-    token: string,
+  static async validateToken(
+    token: string
   ): Promise<IApiResponse<{ user: IUser }>> {
     await delay(500)
 
     const userId = Object.keys(mockTokens).find(
-      (key) => mockTokens[key] === token,
+      key => mockTokens[key] === token
     )
 
     if (!userId) {
       throw simulateError('Invalid token', 'INVALID_TOKEN')
     }
 
-    const user = mockUsers.find((u) => u.userId === userId)
+    const user = mockUsers.find(u => u.userId === userId)
 
     if (!user) {
       throw simulateError('User not found', 'USER_NOT_FOUND')
@@ -125,12 +125,12 @@ export class AuthApi {
     return simulateSuccess({ user }, 'Token valid')
   }
 
-  static async logout (): Promise<IApiResponse<{ message: string }>> {
+  static async logout(): Promise<IApiResponse<{ message: string }>> {
     await delay(300)
 
     return simulateSuccess(
       { message: 'Logged out successfully' },
-      'Logout successful',
+      'Logout successful'
     )
   }
 }

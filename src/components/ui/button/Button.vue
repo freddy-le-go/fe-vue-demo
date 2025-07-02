@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { Primitive, type PrimitiveProps } from 'reka-ui'
-import { cn } from '@/lib/utils'
-import { type ButtonVariants, buttonVariants } from '.'
-import { LoadingIndicator } from '@/components/ui/loading'
+  import type { HTMLAttributes } from 'vue'
+  import { Primitive, type PrimitiveProps } from 'reka-ui'
+  import { cn } from '@/lib/utils'
+  import { type ButtonVariants, buttonVariants } from '.'
+  import { LoadingIndicator } from '@/components/ui/loading'
 
   interface Props extends PrimitiveProps {
     variant?: ButtonVariants['variant']
@@ -16,14 +16,14 @@ import { LoadingIndicator } from '@/components/ui/loading'
     disabled?: boolean
   }
 
-const props = withDefaults(defineProps<Props>(), {
-  as: 'button',
-  isLoading: false,
-  loadingText: 'Loading...',
-  loadingType: 'spinner',
-  loadingSize: 'md',
-  disabled: false,
-})
+  const props = withDefaults(defineProps<Props>(), {
+    as: 'button',
+    isLoading: false,
+    loadingText: 'Loading...',
+    loadingType: 'spinner',
+    loadingSize: 'md',
+    disabled: false,
+  })
 </script>
 
 <template>

@@ -1,73 +1,73 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+  import { ref } from 'vue'
 
-import { Eye, EyeOff } from 'lucide-vue-next'
+  import { Eye, EyeOff } from 'lucide-vue-next'
 
-import type { SubmissionHandler } from 'vee-validate'
+  import type { SubmissionHandler } from 'vee-validate'
 
-import { Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { InputWrapper } from '@/components/ui/input'
-import { Form, FormFieldWrapper } from '@/components/ui/form'
+  import { Card } from '@/components/ui/card'
+  import { Label } from '@/components/ui/label'
+  import { Button } from '@/components/ui/button'
+  import { Checkbox } from '@/components/ui/checkbox'
+  import { InputWrapper } from '@/components/ui/input'
+  import { Form, FormFieldWrapper } from '@/components/ui/form'
 
-import { loginSchema } from './composables'
+  import { loginSchema } from './composables'
 
-import type { LoginFormData } from './types'
+  import type { LoginFormData } from './types'
 
-import { useLoginMutation } from '@/composables/useAuthQueries'
+  import { useLoginMutation } from '@/composables/useAuthQueries'
 
-const emit = defineEmits<{
+  const emit = defineEmits<{
     onSuccess: [data: { userId: string; password: string; rememberMe: boolean }]
     onError: [error: string]
   }>()
 
-const rememberMe = ref(false)
-const showPassword = ref(false)
-const userIdError = ref<string | null>(null)
-const passwordError = ref<string | null>(null)
+  const rememberMe = ref(false)
+  const showPassword = ref(false)
+  const userIdError = ref<string | null>(null)
+  const passwordError = ref<string | null>(null)
 
-const loginMutation = useLoginMutation()
+  const loginMutation = useLoginMutation()
 
-const onSubmit = async (values: LoginFormData) => {
-  userIdError.value = null
-  passwordError.value = null
+  const onSubmit = async (values: LoginFormData) => {
+    userIdError.value = null
+    passwordError.value = null
 
-  try {
-    await loginMutation.mutateAsync({
-      request: {
+    try {
+      await loginMutation.mutateAsync({
+        request: {
+          userId: values.userId,
+          password: values.password,
+        },
+        rememberMe: rememberMe.value,
+      })
+
+      emit('onSuccess', {
         userId: values.userId,
         password: values.password,
-      },
-      rememberMe: rememberMe.value,
-    })
+        rememberMe: rememberMe.value,
+      })
+    } catch (error: any) {
+      const errorMessage = error.message || 'Login failed. Please try again.'
 
-    emit('onSuccess', {
-      userId: values.userId,
-      password: values.password,
-      rememberMe: rememberMe.value,
-    })
-  } catch (error: any) {
-    const errorMessage = error.message || 'Login failed. Please try again.'
-
-    if (error.message === 'Invalid credentials') {
-      userIdError.value = 'Invalid user ID or password'
-      passwordError.value = 'Invalid user ID or password'
-    } else {
-      emit('onError', errorMessage)
+      if (error.message === 'Invalid credentials') {
+        userIdError.value = 'Invalid user ID or password'
+        passwordError.value = 'Invalid user ID or password'
+      } else {
+        emit('onError', errorMessage)
+      }
     }
   }
-}
 
-const togglePasswordVisibility = (): void => {
-  showPassword.value = !showPassword.value
-}
+  const togglePasswordVisibility = (): void => {
+    showPassword.value = !showPassword.value
+  }
 
-const clearErrors = (): void => {
-  userIdError.value = null
-  passwordError.value = null
-}
+  const clearErrors = (): void => {
+    userIdError.value = null
+    passwordError.value = null
+  }
 </script>
 
 <template>

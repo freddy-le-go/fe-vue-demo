@@ -1,101 +1,101 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+  import { ref, computed } from 'vue'
 
-import { ArrowLeft, Pencil, Save, X } from 'lucide-vue-next'
+  import { ArrowLeft, Pencil, Save, X } from 'lucide-vue-next'
 
-import { useAuthStore } from '@/stores/auth'
-import {
-  useProfileQuery,
-  useUpdateProfileMutation,
-  useUploadAvatarMutation,
-} from '@/composables/useProfileQueries'
-import { Button } from '@/components/ui/button'
-import { InputWrapper } from '@/components/ui/input'
-import { Form, FormFieldWrapper } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Label } from '@/components/ui/label'
+  import { useAuthStore } from '@/stores/auth'
+  import {
+    useProfileQuery,
+    useUpdateProfileMutation,
+    useUploadAvatarMutation,
+  } from '@/composables/useProfileQueries'
+  import { Button } from '@/components/ui/button'
+  import { InputWrapper } from '@/components/ui/input'
+  import { Form, FormFieldWrapper } from '@/components/ui/form'
+  import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from '@/components/ui/select'
+  import { Label } from '@/components/ui/label'
 
-import { SALUTATION_OPTIONS } from './constants'
+  import { SALUTATION_OPTIONS } from './constants'
 
-const authStore = useAuthStore()
-const userId = authStore.user?.userId
+  const authStore = useAuthStore()
+  const userId = authStore.user?.userId
 
-const { data: profileResponse } = useProfileQuery(userId || '')
-const profile = computed(() => profileResponse.value?.data)
+  const { data: profileResponse } = useProfileQuery(userId || '')
+  const profile = computed(() => profileResponse.value?.data)
 
-const updateProfileMutation = useUpdateProfileMutation()
-const uploadAvatarMutation = useUploadAvatarMutation()
+  const updateProfileMutation = useUpdateProfileMutation()
+  const uploadAvatarMutation = useUploadAvatarMutation()
 
-const isEditMode = ref(false)
+  const isEditMode = ref(false)
 
-const schema = {
-  salutation: { required: true, minLength: 2 },
-  firstName: { required: true, minLength: 2 },
-  lastName: { required: true, minLength: 2 },
-  email: { required: true, email: true },
-}
+  const schema = {
+    salutation: { required: true, minLength: 2 },
+    firstName: { required: true, minLength: 2 },
+    lastName: { required: true, minLength: 2 },
+    email: { required: true, email: true },
+  }
 
-const Salutation = 'Salutation'
-const FirstName = 'First name'
-const LastName = 'Last name'
-const Email = 'Email address'
+  const Salutation = 'Salutation'
+  const FirstName = 'First name'
+  const LastName = 'Last name'
+  const Email = 'Email address'
 
-const handleUpdateProfile = async (values: any) => {
-  if (!userId) return
+  const handleUpdateProfile = async (values: any) => {
+    if (!userId) return
 
-  try {
-    await updateProfileMutation.mutateAsync({
-      userId,
-      data: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        bio: values.bio,
-        email: values.email,
-      },
-    })
+    try {
+      await updateProfileMutation.mutateAsync({
+        userId,
+        data: {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          bio: values.bio,
+          email: values.email,
+        },
+      })
+      isEditMode.value = false
+    } catch {
+      alert('Profile update failed. Please try again.')
+    }
+  }
+
+  const handleAvatarUpload = async (event: Event) => {
+    const target = event.target as HTMLInputElement
+    const file = target.files?.[0]
+
+    if (!file || !userId) return
+
+    try {
+      await uploadAvatarMutation.mutateAsync({ userId, file })
+    } catch {
+      alert('Avatar upload failed. Please try again.')
+    }
+  }
+
+  const onAvatarChange = (event: Event, field: any) => {
+    const target = event.target as HTMLInputElement
+    const file = target.files?.[0]
+
+    if (file && userId) {
+      handleAvatarUpload(event)
+      // Update the field value with a temporary URL for preview
+      field.onChange(URL.createObjectURL(file))
+    }
+  }
+
+  const saveProfile = async (values: any) => {
+    await handleUpdateProfile(values)
+  }
+
+  const cancelEdit = () => {
     isEditMode.value = false
-  } catch {
-    alert('Profile update failed. Please try again.')
   }
-}
-
-const handleAvatarUpload = async (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-
-  if (!file || !userId) return
-
-  try {
-    await uploadAvatarMutation.mutateAsync({ userId, file })
-  } catch {
-    alert('Avatar upload failed. Please try again.')
-  }
-}
-
-const onAvatarChange = (event: Event, field: any) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-
-  if (file && userId) {
-    handleAvatarUpload(event)
-    // Update the field value with a temporary URL for preview
-    field.onChange(URL.createObjectURL(file))
-  }
-}
-
-const saveProfile = async (values: any) => {
-  await handleUpdateProfile(values)
-}
-
-const cancelEdit = () => {
-  isEditMode.value = false
-}
 </script>
 
 <template>

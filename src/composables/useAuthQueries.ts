@@ -4,7 +4,7 @@ import { AuthApi, type ILoginRequest, type IRegisterRequest } from '@/lib/api'
 import { queryKeys } from '@/lib/api/queryKeys'
 import { useAuthStore } from '@/stores/auth'
 
-export function useLoginMutation () {
+export function useLoginMutation() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const authStore = useAuthStore()
@@ -40,7 +40,7 @@ export function useLoginMutation () {
   })
 }
 
-export function useRegisterMutation () {
+export function useRegisterMutation() {
   const queryClient = useQueryClient()
   const router = useRouter()
 
@@ -62,7 +62,7 @@ export function useRegisterMutation () {
   })
 }
 
-export function useLogoutMutation () {
+export function useLogoutMutation() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const authStore = useAuthStore()
@@ -95,7 +95,7 @@ export function useLogoutMutation () {
   })
 }
 
-export function useValidateTokenQuery (token: string | null) {
+export function useValidateTokenQuery(token: string | null) {
   return useQuery({
     queryKey: queryKeys.auth.user(),
     queryFn: async () => {

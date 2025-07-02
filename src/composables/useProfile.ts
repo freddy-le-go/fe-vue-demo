@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 import { ProfileApi, type IUser, type IUpdateProfileRequest } from '@/lib/api'
 
-export function useProfile () {
+export function useProfile() {
   const profile = ref<IUser | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)

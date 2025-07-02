@@ -8,7 +8,7 @@ import {
 import { inject } from 'vue'
 import { FORM_ITEM_INJECTION_KEY } from './injectionKeys'
 
-export function useFormField () {
+export function useFormField() {
   const fieldContext = inject(FieldContextKey)
   const fieldItemContext = inject(FORM_ITEM_INJECTION_KEY)
 

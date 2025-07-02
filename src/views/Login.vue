@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router'
 
-import { ArrowLeftIcon } from 'lucide-vue-next'
+  import { ArrowLeftIcon } from 'lucide-vue-next'
 
-import { useAuthStore } from '@/stores/auth'
-import { useSeo } from '@/composables/useSeo'
+  import { useAuthStore } from '@/stores/auth'
+  import { useSeo } from '@/composables/useSeo'
 
-import { ButtonLink } from '@/components/ui/button'
-import { LoginForm } from '@/features/auth/LoginForm'
+  import { ButtonLink } from '@/components/ui/button'
+  import { LoginForm } from '@/features/auth/LoginForm'
 
-const router = useRouter()
+  const router = useRouter()
 
-useSeo({
-  title: 'Login - Vue.js Application',
-  description:
+  useSeo({
+    title: 'Login - Vue.js Application',
+    description:
       'Sign in to your account. Secure login with modern authentication.',
-  keywords: 'Login, Sign In, Authentication, Vue.js, Web Application',
-})
+    keywords: 'Login, Sign In, Authentication, Vue.js, Web Application',
+  })
 
-const authStore = useAuthStore()
+  const authStore = useAuthStore()
 
-const handleLoginSuccess = async (data: {
+  const handleLoginSuccess = async (data: {
     userId: string
     password: string
     rememberMe: boolean
   }): Promise<void> => {
-  await authStore.login(data.userId, data.password, data.rememberMe)
+    await authStore.login(data.userId, data.password, data.rememberMe)
 
-  router.replace('/profile')
-}
-
-const handleLoginError = (error: string): void => {
-  if (error !== 'Invalid credentials') {
-    alert(error)
+    router.replace('/profile')
   }
-}
+
+  const handleLoginError = (error: string): void => {
+    if (error !== 'Invalid credentials') {
+      alert(error)
+    }
+  }
 </script>
 
 <template>
