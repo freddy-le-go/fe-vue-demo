@@ -2,6 +2,20 @@
 
 A modern Vue.js 3 application for user profile management with authentication, form handling, and responsive UI components.
 
+## 📱 Preview
+
+### Authentication
+| Desktop | Mobile |
+|---------|--------|
+| ![Login Desktop](./docs/login.app.jpeg) | ![Login Mobile](./docs/login-mobile.app.jpeg) |
+| ![Register Desktop](./docs/register.app.jpeg) | ![Register Mobile](./docs/register-mobile.app.jpeg) |
+
+### Profile Management
+| Desktop | Mobile |
+|---------|--------|
+| ![Profile View Desktop](./docs/profile-view.app.jpeg) | ![Profile View Mobile](./docs/profile-view-mobile.app.jpeg) |
+| ![Profile Edit Desktop](./docs/profile-edit.app.jpeg) | ![Profile Edit Mobile](./docs/profile-edit-mobile.app.jpeg) |
+
 ## 🚀 Features
 
 - **Authentication System**: Login and registration with form validation
@@ -30,20 +44,38 @@ A modern Vue.js 3 application for user profile management with authentication, f
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Base UI components (Button, Input, etc.)
-│   └── AppHeader.vue   # Main header component
+│   ├── ui/             # Base UI components (Button, Input, Select, etc.)
+│   └── AppHeader/      # Main header component
 ├── features/           # Feature-based modules
-│   ├── auth/          # Authentication features
+│   ├── auth/          # Authentication features (Login, Register)
 │   └── profile/       # Profile management features
 ├── views/             # Page components
 │   ├── profile/       # Profile-related pages
+│   │   ├── BasicDetails/     # Basic profile details
+│   │   ├── AdditionalDetails.vue
+│   │   ├── SpouseDetails.vue
+│   │   └── PersonalPreferences.vue
 │   ├── Home.vue       # Home page
 │   ├── Login.vue      # Login page
-│   └── Register.vue   # Registration page
+│   ├── Register.vue   # Registration page
+│   └── Profile.vue    # Main profile page
+├── layouts/           # Layout components
+│   └── AppLayout.vue  # Main application layout
 ├── stores/            # Pinia stores
+│   └── auth/          # Authentication store
 ├── composables/       # Reusable composables
+│   ├── useAuthQueries.ts
+│   ├── useProfile.ts
+│   ├── useProfileQueries.ts
+│   └── useSeo/        # SEO utilities
 ├── lib/               # Utility libraries and API
-└── router/            # Vue Router configuration
+│   ├── api/           # API client and types
+│   └── utils.ts       # Utility functions
+├── router/            # Vue Router configuration
+├── assets/            # Static assets
+├── App.vue            # Root component
+├── main.ts            # Application entry point
+└── style.css          # Global styles
 ```
 
 ## 🚀 Getting Started
@@ -112,12 +144,6 @@ The app includes a comprehensive UI component library:
 - **Feedback**: Error messages, loading states
 
 ## 🔧 Configuration
-
-### Environment Variables
-Create a `.env` file in the root directory:
-```env
-VITE_API_BASE_URL=your_api_url_here
-```
 
 ### Vercel Deployment
 The project includes `vercel.json` for seamless deployment to Vercel with proper SPA routing configuration.
