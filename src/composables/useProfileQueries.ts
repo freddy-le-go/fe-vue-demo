@@ -1,6 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { ProfileApi, type IUpdateProfileRequest } from '@/lib/api'
 import { queryKeys } from '@/lib/api/queryKeys'
+import { ProfileApi, type IUpdateProfileRequest } from '@/lib/api'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+
+import ms from 'ms'
 
 export function useProfileQuery(userId: string) {
   return useQuery({
@@ -9,8 +11,8 @@ export function useProfileQuery(userId: string) {
       return ProfileApi.getProfile(userId)
     },
     enabled: !!userId,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
+    staleTime: ms('5m'),
+    gcTime: ms('10m'),
   })
 }
 
@@ -21,8 +23,8 @@ export function useProfileStatsQuery(userId: string) {
       return ProfileApi.getUserStats(userId)
     },
     enabled: !!userId,
-    staleTime: 1000 * 60 * 10,
-    gcTime: 1000 * 60 * 20,
+    staleTime: ms('10m'),
+    gcTime: ms('20m'),
   })
 }
 

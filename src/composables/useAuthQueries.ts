@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { AuthApi, type ILoginRequest, type IRegisterRequest } from '@/lib/api'
 import { queryKeys } from '@/lib/api/queryKeys'
 import { useAuthStore } from '@/stores/auth'
+import ms from 'ms'
 
 export function useLoginMutation() {
   const queryClient = useQueryClient()
@@ -104,7 +105,7 @@ export function useValidateTokenQuery(token: string | null) {
       return res.data.user
     },
     enabled: !!token,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
+    staleTime: ms('5m'),
+    gcTime: ms('10m'),
   })
 }

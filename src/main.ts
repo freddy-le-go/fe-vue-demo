@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import { createHead } from '@vueuse/head'
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query'
 
+import ms from 'ms'
 import { createPinia } from 'pinia'
 
 import { useAuthStore } from '@/stores/auth/index'
@@ -15,8 +16,8 @@ import './style.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
+      staleTime: ms('5m'),
+      gcTime: ms('10m'),
       retry: 1,
     },
     mutations: {

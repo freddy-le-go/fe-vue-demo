@@ -15,6 +15,7 @@ import {
   getCurrentTimestamp,
   addUserWithHashedPassword,
 } from './mockData'
+import ms from 'ms'
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -34,7 +35,7 @@ export class AuthApi {
   static async login(
     request: ILoginRequest
   ): Promise<IApiResponse<ILoginResponse>> {
-    await delay(1000)
+    await delay(ms('1s'))
 
     const mockUsers = getMockUsers()
     const mockTokens = getMockTokens()
@@ -53,7 +54,7 @@ export class AuthApi {
     }
 
     const token = mockTokens[request.userId] || `mock_token_${request.userId}`
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+    const expiresAt = new Date(Date.now() + ms('24h')).toISOString() // 24 hours
 
     const response: ILoginResponse = {
       user,
@@ -67,7 +68,7 @@ export class AuthApi {
   static async register(
     request: IRegisterRequest
   ): Promise<IApiResponse<IRegisterResponse>> {
-    await delay(1500)
+    await delay(ms('1.5s'))
 
     const mockUsers = getMockUsers()
 
@@ -100,7 +101,7 @@ export class AuthApi {
 
     const mockTokens = getMockTokens()
     const token = mockTokens[request.userId]
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+    const expiresAt = new Date(Date.now() + ms('24h')).toISOString()
 
     const response: IRegisterResponse = {
       user: newUser,
@@ -114,7 +115,7 @@ export class AuthApi {
   static async validateToken(
     token: string
   ): Promise<IApiResponse<{ user: IUser }>> {
-    await delay(500)
+    await delay(ms('500ms'))
 
     const mockTokens = getMockTokens()
     const mockUsers = getMockUsers()
@@ -137,7 +138,7 @@ export class AuthApi {
   }
 
   static async logout(): Promise<IApiResponse<{ message: string }>> {
-    await delay(300)
+    await delay(ms('300ms'))
 
     return simulateSuccess(
       { message: 'Logged out successfully' },

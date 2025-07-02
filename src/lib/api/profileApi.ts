@@ -6,6 +6,7 @@ import type {
   IApiError,
 } from './types'
 import { mockUsers } from './mockData'
+import ms from 'ms'
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -23,7 +24,7 @@ const simulateSuccess = <T>(data: T, message: string): IApiResponse<T> => ({
 
 export class ProfileApi {
   static async getProfile(userId: string): Promise<IApiResponse<IUser>> {
-    await delay(800)
+    await delay(ms('800ms'))
 
     const user = mockUsers.find(u => u.userId === userId)
 
