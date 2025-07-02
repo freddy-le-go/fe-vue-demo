@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue'
+  import { z } from 'zod'
+  import { toTypedSchema } from '@vee-validate/zod'
 
-  import { Pencil, Save, X } from 'lucide-vue-next'
+  import { Pencil, Save, X, ArrowLeftIcon } from 'lucide-vue-next'
 
   import {
     useProfileQuery,
@@ -21,6 +23,9 @@
   import { Label } from '@/components/ui/label'
 
   import { SALUTATION_OPTIONS } from './constants'
+
+  import type { IUpdateProfileRequest } from '@/lib/api'
+
   const authStore = useAuthStore()
   const userId = authStore.user?.userId
 
@@ -30,20 +35,23 @@
   const updateProfileMutation = useUpdateProfileMutation()
   const isEditMode = ref(false)
 
-  const schema = {
-    salutation: { required: true, minLength: 2 },
-    firstName: { required: true, minLength: 2 },
-    lastName: { required: true, minLength: 2 },
-    email: { required: true, email: true },
-  }
+  const schema = toTypedSchema(
+    z.object({
+      salutation: z.string().min(1, 'Salutation is required'),
+      firstName: z.string().min(2, 'First name must be at least 2 characters'),
+      lastName: z.string().min(2, 'Last name must be at least 2 characters'),
+      email: z.string().email('Please enter a valid email address'),
+    })
+  )
 
-  const handleUpdateProfile = async (values: any) => {
+  const handleUpdateProfile = async (values: IUpdateProfileRequest) => {
     if (!userId) return
 
     try {
       await updateProfileMutation.mutateAsync({
         userId,
         data: {
+          salutation: values.salutation,
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,
@@ -55,7 +63,7 @@
     }
   }
 
-  const saveProfile = async (values: any) => {
+  const saveProfile = async (values: IUpdateProfileRequest) => {
     await handleUpdateProfile(values)
   }
 
@@ -70,13 +78,13 @@
       class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4 md:gap-0"
     >
       <h1 class="text-3xl font-bold">
-        <span v-if="isEditMode">Edit Basic Details</span>
-        <span v-else>Basic Details</span>
+        <span v-if="isEditMode">Edit Profile</span>
+        <span v-else>My Profile</span>
       </h1>
       <template v-if="isEditMode">
         <Button variant="secondary" @click="cancelEdit">
-          <X class="size-4" />
-          Cancel
+          <ArrowLeftIcon class="size-4" />
+          Back to My Profile
         </Button>
       </template>
       <template v-else>

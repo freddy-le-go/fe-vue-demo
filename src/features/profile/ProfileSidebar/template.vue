@@ -27,7 +27,7 @@
           :key="item.name"
           :class="
             cn(
-              'pl-4 relative flex items-center h-8',
+              'pl-2 relative flex items-center h-8',
               isActive(item.path)
                 ? 'font-bold before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-primary'
                 : 'text-muted-foreground'
@@ -37,7 +37,7 @@
           <ButtonLink
             :to="item.path"
             variant="ghost"
-            class="w-full justify-start h-8 px-0 font-inherit"
+            class="w-full justify-start h-8 px-2 font-inherit"
             :class="
               isActive(item.path) ? 'text-foreground' : 'text-muted-foreground'
             "

@@ -34,6 +34,7 @@ export interface IRegisterResponse {
 }
 
 export interface IUpdateProfileRequest {
+  salutation?: string
   firstName?: string
   lastName?: string
   email?: string
