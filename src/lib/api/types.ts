@@ -1,9 +1,9 @@
 export interface IUser {
   id: string
   userId: string
-  email: string
-  firstName: string
-  lastName: string
+  email?: string
+  firstName?: string
+  lastName?: string
   salutation?: string
   avatar?: string
 }

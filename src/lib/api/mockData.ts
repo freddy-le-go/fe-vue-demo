@@ -31,9 +31,6 @@ export const mockUsers: IUser[] = [
   {
     id: '4',
     userId: 'freddy',
-    email: 'freddy@example.com',
-    firstName: 'Freddy',
-    lastName: 'Doe 2',
   },
 ]
 
