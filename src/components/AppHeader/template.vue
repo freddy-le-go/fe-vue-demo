@@ -1,16 +1,29 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useAuthStore } from '@/stores/auth'
-  import { ButtonLink } from '@/components/ui/button'
-  import { Button } from '@/components/ui/button'
+  import { computed, ref } from 'vue'
+  import { useRoute } from 'vue-router'
+
   import { Menu } from 'lucide-vue-next'
 
+  import { useAuthStore } from '@/stores/auth'
+  import { Button } from '@/components/ui/button'
+  import { ButtonLink } from '@/components/ui/button'
+
+  const route = useRoute()
   const showMenu = ref(false)
   const authStore = useAuthStore()
 
   const handleLogout = () => {
     authStore.logout()
     showMenu.value = false
+  }
+
+  const currentPath = computed(() => route.path)
+  const getNavLinkVariant = (path: string) => {
+    const isActive =
+      path === '/'
+        ? currentPath.value === path
+        : currentPath.value.startsWith(path)
+    return isActive ? 'default' : 'link'
   }
 </script>
 
@@ -28,13 +41,19 @@
       />
     </router-link>
     <nav class="hidden md:flex items-center gap-4">
-      <ButtonLink to="/">Home</ButtonLink>
+      <ButtonLink :variant="getNavLinkVariant('/')" to="/">Home</ButtonLink>
       <template v-if="!authStore.isAuthenticated">
-        <ButtonLink variant="link" to="/login">Login</ButtonLink>
-        <ButtonLink variant="link" to="/register">Register</ButtonLink>
+        <ButtonLink :variant="getNavLinkVariant('/login')" to="/login"
+          >Login</ButtonLink
+        >
+        <ButtonLink :variant="getNavLinkVariant('/register')" to="/register"
+          >Register</ButtonLink
+        >
       </template>
       <template v-else>
-        <ButtonLink variant="link" to="/profile">Profile</ButtonLink>
+        <ButtonLink :variant="getNavLinkVariant('/profile')" to="/profile"
+          >Profile</ButtonLink
+        >
         <Button variant="outline" @click="authStore.logout()">Logout</Button>
       </template>
     </nav>
@@ -49,20 +68,21 @@
       >
         <ButtonLink
           to="/"
+          :variant="getNavLinkVariant('/')"
           class="w-3/4 text-center mb-4 text-lg"
           @click="showMenu = false"
           >Home</ButtonLink
         >
         <template v-if="!authStore.isAuthenticated">
           <ButtonLink
-            variant="link"
+            :variant="getNavLinkVariant('/login')"
             to="/login"
             class="w-3/4 text-center mb-4 text-lg"
             @click="showMenu = false"
             >Login</ButtonLink
           >
           <ButtonLink
-            variant="link"
+            :variant="getNavLinkVariant('/register')"
             to="/register"
             class="w-3/4 text-center mb-4 text-lg"
             @click="showMenu = false"
@@ -71,7 +91,7 @@
         </template>
         <template v-else>
           <ButtonLink
-            variant="link"
+            :variant="getNavLinkVariant('/profile')"
             to="/profile"
             class="w-3/4 text-center mb-4 text-lg"
             @click="showMenu = false"
