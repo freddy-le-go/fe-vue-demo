@@ -8,11 +8,12 @@ import type {
   IUser,
 } from './types'
 import {
-  mockUsers,
-  mockPasswords,
-  mockTokens,
   generateId,
+  getMockUsers,
+  getMockTokens,
+  verifyPassword,
   getCurrentTimestamp,
+  addUserWithHashedPassword,
 } from './mockData'
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -35,13 +36,19 @@ export class AuthApi {
   ): Promise<IApiResponse<ILoginResponse>> {
     await delay(1000)
 
+    const mockUsers = getMockUsers()
+    const mockTokens = getMockTokens()
+
     const user = mockUsers.find(u => u.userId === request.userId)
     if (!user) {
       throw simulateError('Invalid credentials', 'INVALID_CREDENTIALS')
     }
 
-    const storedPassword = mockPasswords[request.userId]
-    if (!storedPassword || storedPassword !== request.password) {
+    const isValidPassword = await verifyPassword(
+      request.userId,
+      request.password
+    )
+    if (!isValidPassword) {
       throw simulateError('Invalid credentials', 'INVALID_CREDENTIALS')
     }
 
@@ -61,6 +68,8 @@ export class AuthApi {
     request: IRegisterRequest
   ): Promise<IApiResponse<IRegisterResponse>> {
     await delay(1500)
+
+    const mockUsers = getMockUsers()
 
     const existingUser = mockUsers.find(
       u => u.userId === request.userId || u.email === request.email
@@ -87,12 +96,11 @@ export class AuthApi {
       updatedAt: getCurrentTimestamp(),
     }
 
-    mockUsers.push(newUser)
-    mockPasswords[request.userId] = request.password
-    mockTokens[request.userId] = `mock_token_${request.userId}`
+    await addUserWithHashedPassword(newUser, request.password)
 
+    const mockTokens = getMockTokens()
     const token = mockTokens[request.userId]
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
 
     const response: IRegisterResponse = {
       user: newUser,
@@ -107,6 +115,9 @@ export class AuthApi {
     token: string
   ): Promise<IApiResponse<{ user: IUser }>> {
     await delay(500)
+
+    const mockTokens = getMockTokens()
+    const mockUsers = getMockUsers()
 
     const userId = Object.keys(mockTokens).find(
       key => mockTokens[key] === token
