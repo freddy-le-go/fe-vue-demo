@@ -1,1 +1,1 @@
-export { default } from './AppHeader.vue'
+export { default } from './template.vue'
